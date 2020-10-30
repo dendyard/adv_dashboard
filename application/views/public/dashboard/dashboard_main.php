@@ -13,7 +13,7 @@
                                 
                                <div class="header">
                                <center>
-                                <h4 class="title_card">Campaign Report Dashboard</h4>
+                                <h4 class="title_card">Dashboard</h4>
                                 <p class="subtitle_card" id='filter_status'>
                                     Data Period :&nbsp;<?php echo $start; ?>
      to <?php echo $end; ?>
