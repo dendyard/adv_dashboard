@@ -1,0 +1,145 @@
+
+                
+
+
+
+<div class="content">
+            <div class="container-fluid">
+                
+                <div class="row"> 
+                    <div class="col-md-12 center-block" >
+                        <div class="card" style="height:297px;">
+                            <div class="header" style="margin-bottom:30px;">
+                                
+                               <div class="header">
+                               <center>
+                                <h4 class="title_card">AdX Props Dashboard Report</h4>
+                                <p class="subtitle_card" id='filter_status'>
+                                    Data Period :&nbsp;<?php echo $start; ?>
+     to <?php echo $end; ?>
+                                </p>
+                               </center>
+                            </div>
+                            </div>
+                            
+                            
+                           
+                            <div class="col-md-4 center-block">
+                                <div class="card">
+                                    <div class="header_purple">
+                                        <center>
+                                        <p class="tittle_box">Total Revenue</p>
+                                        </center>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><?php echo  number_format($t_reveune['t_rev']); ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 center-block">
+                                <div class="card">
+                                    <div class="header_purple">
+                                        <center>
+                                        <p class="tittle_box">Ad Request</p>
+                                        </center>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><?php echo  number_format($ad_req['t_rev']); ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 center-block">
+                                <div class="card">
+                                    <div class="header_purple">
+                                        <center>
+                                        <p class="tittle_box">Ad Impression</p>
+                                        </center>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><?php echo  number_format($ad_imp['t_rev']); ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                        </div>
+                    
+                        
+                    
+                    
+                    </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            
+                            <div class="content table-responsive table-full-width">
+                                <table style="padding-left:10px; padding-right:10px;" id='dashboard' class="table table-hover table-striped">
+                                    <thead>
+                                        <th>No</th>
+                                    	<th>Site Name</th>
+                                    	<th>Ad Request</th>
+                                        <th >Matched Request</th>
+                                    	<th >Coverage</th>
+                                        <th >Ad Impression</th>
+                                    	<th >Ad eCPM</th>
+                                        <th >Revenue (IDR)</th>
+                                        <th>Date</th>
+                                    </thead>
+                                    <tbody>
+                                     <?php
+                                      $numb = 1;
+                                      foreach ($dashboard as $list) {
+                                        ?>
+                                        
+                                        <tr>
+                                         <td><?=$numb?></td>
+                                         <td style="width:30%;"><?=$list['site_name'];?></td>
+                                         <td style='text-align:right'><?=number_format($list['requests']);?></td>
+                                         <td style='text-align:right'><?=number_format($list['matched_request']);?></td>
+                                         <td style='text-align:right'><?php echo round($list['coverage'],2)?>%</td>
+                                         <td style='text-align:right'><?=number_format($list['impressions']);?></td>
+                                         <td style='text-align:right'><?=number_format($list['ecpm_idr']);?></td>
+                                         <td style='text-align:right'><?=number_format($list['revenue_idr']);?></td>
+                                         <td style='text-align:right'><?=$list['date'];?></td>
+                                        </tr>
+                                        
+                                        <?php
+                                          $numb++;
+                                      }
+                                     ?>  
+                                        
+                                     
+                                    
+                                    
+                                    </tbody>
+                                    
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    
+
+
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+    
+    $('#dashboard').DataTable();
+
+} );
+
+</script>
