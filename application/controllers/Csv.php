@@ -62,7 +62,7 @@ class Csv extends CI_Controller {
     }
     
     public function fetch_campaign_report(){
-        $result = $this->process_campaign_report('http://localhost:8899/adv_dashboard/assets/csv/Djarum_campaign_report_20201028073323492.csv');
+        $result = $this->process_campaign_report('http://3.128.254.22/files/campaign_report/Djarum_campaign_report_20201028073323492.csv');
         echo json_encode($result, JSON_PRETTY_PRINT);
     }
     
@@ -443,5 +443,32 @@ class Csv extends CI_Controller {
             return $insert;
     }
     
+    public function delete_ftp_file($ftpfile) {
+        //DELETE FILE
+            $ftpfile = "/adv/files/campaign_report/Djarum_campaign_report_20201028073323492.csv";
+                
+            $ftp_server="3.128.254.22";
+            // set up basic connection
+            $conn_id = ftp_connect($ftp_server);
+        
+            $ftp_user_name="advftp";
+            $ftp_user_pass="@dV!f795erV!5";
+        
+            // login with username and password
+            $login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
+            
+            echo 'Login result : ' . $login_result;
+            // try to delete $file
+            if (ftp_delete($conn_id, $filepath)) {
+            echo "$file deleted successful\n";
+            } else {
+            echo "could not delete $file\n";
+            }
+
+            // close the connection
+            ftp_close($conn_id);
+        
+            //END OF DELETE
+    }
         
 }
