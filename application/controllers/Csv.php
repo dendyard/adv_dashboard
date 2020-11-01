@@ -21,44 +21,44 @@ class Csv extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$logged = $this->session->userdata('userLogged');
-	 	if(!$logged){
-	 		redirect("/login");
-		 }
+//		$logged = $this->session->userdata('userLogged');
+//	 	if(!$logged){
+//	 		redirect("/login");
+//		 }
         $this->load->model('Adv_Model');
 	}
 	
 	public function index()
 	{
     
-		if ($this->session->userdata('email') == ""){
-			redirect('/login', 'refresh');
-		}
-			
-            
-        $campaign_id 	 = $this->input->get('campaign_id');
-
-        $startdate = '9/8/2020 12:00:00 am';
-        $enddate = '9/9/2020 12:00:00 am';
-
-        $data = array (
-            'dashboard' => $this->Adv_Model->get_list($startdate, $enddate, $campaign_id),
-            'media_cost' => $this->Adv_Model->get_t_mediacost($startdate, $enddate, $campaign_id),
-            'conversion'    => $this->Adv_Model->get_t_conversion($startdate, $enddate, $campaign_id),
-            'ad_imp'    => $this->Adv_Model->get_ad_imp($startdate, $enddate, $campaign_id),
-
-        );
-
-        $filter = array (
-            'filter' => $this->Adv_Model->get_site_name(),
-            'start'  => $startdate,
-            'end'    => $enddate,
-            'siteselect' => $campaign_id
-        );
-
-        $this->load->view('public/template/header',$filter);
-        $this->load->view('public/dashboard/csv_view',$data);
-        $this->load->view('public/template/footer');
+//		if ($this->session->userdata('email') == ""){
+//			redirect('/login', 'refresh');
+//		}
+//			
+//            
+//        $campaign_id 	 = $this->input->get('campaign_id');
+//
+//        $startdate = '9/8/2020 12:00:00 am';
+//        $enddate = '9/9/2020 12:00:00 am';
+//
+//        $data = array (
+//            'dashboard' => $this->Adv_Model->get_list($startdate, $enddate, $campaign_id),
+//            'media_cost' => $this->Adv_Model->get_t_mediacost($startdate, $enddate, $campaign_id),
+//            'conversion'    => $this->Adv_Model->get_t_conversion($startdate, $enddate, $campaign_id),
+//            'ad_imp'    => $this->Adv_Model->get_ad_imp($startdate, $enddate, $campaign_id),
+//
+//        );
+//
+//        $filter = array (
+//            'filter' => $this->Adv_Model->get_site_name(),
+//            'start'  => $startdate,
+//            'end'    => $enddate,
+//            'siteselect' => $campaign_id
+//        );
+//
+//        $this->load->view('public/template/header',$filter);
+//        $this->load->view('public/dashboard/csv_view',$data);
+//        $this->load->view('public/template/footer');
     }
     
     public function fetch_campaign_report(){
