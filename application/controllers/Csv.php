@@ -62,7 +62,7 @@ class Csv extends CI_Controller {
     }
     
     public function fetch_campaign_report(){
-        $result = $this->process_campaign_report('http://3.128.254.22/files/Djarum_campaign_report_20201028073323492.csv');
+        $result = $this->process_campaign_report('http://3.128.254.22/files/campaign_report/Djarum_campaign_report_20201028073323492.csv');
         echo json_encode($result, JSON_PRETTY_PRINT);
     }
     
