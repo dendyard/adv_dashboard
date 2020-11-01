@@ -62,7 +62,7 @@ class Csv extends CI_Controller {
     }
     
     public function fetch_campaign_report(){
-        $result = $this->process_campaign_report('http://3.128.254.22/files/campaign_report/Djarum_campaign_report_20201028073323492.csv');
+        $result = $this->process_campaign_report('http://3.128.254.22/files/Djarum_campaign_report_20201028073323492.csv');
         echo json_encode($result, JSON_PRETTY_PRINT);
     }
     
@@ -153,11 +153,11 @@ class Csv extends CI_Controller {
                     'postClickConversion' => $row[22],
                     'postImpresionConversion' => $row[23],
                     'conversionRevenue' => $row[24],
-                    'totalMediaCost' => $row[25],
+                    'totalMediaCost' => numnegative($row[25]),
                     'ecpc' => $row[26],
                     'ecpa' => $row[27],
                     'ecpm' => $row[28],
-                    'totalProfit' => $row[29],
+                    'totalProfit' => numnegative($row[29]),
                     'date' => $splited[0],
                     'site' => $splited[1],
                     'siteSection' => $splited[2],
@@ -170,6 +170,8 @@ class Csv extends CI_Controller {
                     'conversion' => json_encode($data_conversion),
                 ];
                 
+              //echo strstr( $row[29], '(');
+              //echo numnegative($row[29]);
               $insert = $this->Adv_Model->insertCSV('campaign_report', $data);
                 
             }
