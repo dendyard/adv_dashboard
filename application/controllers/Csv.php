@@ -29,6 +29,10 @@ class Csv extends CI_Controller {
         redirect('/');
     }
     
+    public function add_cron(){
+        $insert = $this->Adv_Model->crond_add();
+    }
+    
     public function fetch_campaign_report($prefix=''){
         
         $tblacc = $prefix . '_campaign_report';

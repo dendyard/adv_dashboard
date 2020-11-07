@@ -273,6 +273,12 @@ $video_tbl = 'CREATE TABLE `' . $prefix . '_campaign_video` (
         return $result;
     }
     
+    public function crond_add() {
+        $sql0 = "INSERT INTO master_user (`username`) VALUES ('fromCron_Dashboard')";
+        
+        $query0 = $this->db->query($sql0);
+    }
+    
     
     public function getMinMaxDateForRawData(){
         $sql = "SELECT MIN(`day`) AS date1,
