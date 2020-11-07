@@ -57,14 +57,9 @@ class Adv extends CI_Controller {
             $collection_tbl_info[] = $tb_info;
         }
         
-//        echo '<pre>';
-//        print_r ($collection_tbl_info);
-//        echo '</pre>';
-//        exit();
-
         $data = array (
             'account_list' => $accList,
-            'collection' => $collection_tbl_info
+            'd_collection' => $collection_tbl_info
         );
 
 
