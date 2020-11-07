@@ -36,29 +36,7 @@
                                     </div>
                                     <div class="card-body">
                                         <small>Table prefix : <?=$al['prefix'][0]?></small><br>
-                                        <table class="table table-bordered mt-8">
-                                          <tbody>
-                                            
-                                            <tr>
-                                              <td>Campaign Report</td>
-                                              <td><?php echo number_format($al['tbl_rec']['camp_report']['t_record']);?> &nbsp;records</td>
-                                            </tr>
-                                            <tr>
-                                              <td>Campaign Version</td>
-                                              <td><?php echo number_format($al['tbl_rec']['version_report']['t_record']);?> &nbsp;records</td>
-                                            </tr>
-                                            <tr>
-                                              <td>Campaign Unique</td>
-                                              <td><?php echo number_format($al['tbl_rec']['unique_report']['t_record']);?> &nbsp;records</td>
-                                            </tr>
-                                            <tr>
-                                              <td>Campaign Video</td>
-                                              <td><?php echo number_format($al['tbl_rec']['video_report']['t_record']);?> &nbsp;records</td>
-                                            </tr>
-                                              
-                                          </tbody>
-                                        </table>
-
+                                        
                                     </div>
                                 </div>
                             </div>
