@@ -72,7 +72,7 @@ class Csv extends CI_Controller {
         
         $files1 = array_diff(scandir($dir,1), array('..', '.'));
         
-        $result = $this->process_video_report($dir . $files1[0], $tblacc);
+        $result = $this->process_unique_report($dir . $files1[0], $tblacc);
         echo json_encode($result, JSON_PRETTY_PRINT);
     }
     
