@@ -32,17 +32,10 @@
 <script type="text/javascript">
 
     $(document).ready(function($){
-        $('#datetimepicker1').datetimepicker({format: 'DD-MM-YYYY'});
-        $('#datetimepicker2').datetimepicker({format: 'DD-MM-YYYY'});
         
         $('#progress_anim').css("display","none");
         
-        var edate = new Date(customend.value);
-        var sdate = new Date(customstart.value);
-        
-        $('#datetimepicker1').val(createDateFormat(sdate));
-        $('#datetimepicker2').val(createDateFormat(edate));
-     
+    
     });
     
     function createDateFormat(val){

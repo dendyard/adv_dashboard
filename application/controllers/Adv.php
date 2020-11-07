@@ -34,70 +34,75 @@ class Adv extends CI_Controller {
 		if ($this->session->userdata('email') == ""){
 			redirect('/login', 'refresh');
 		}
-			
-            $setDate = $this->Adv_Model->getMinMaxDateForRawData();
         
-            $inputStartDate = $this->input->get('start');
-			$inputEndDate 	= $this->input->get('end');
-        
-        
-            $campaign_id 	 = $this->input->get('campaign_id');
-        
-        
-            $startdate 	= (($inputStartDate == "") ? $setDate['date1'] : $inputStartDate);
-			$enddate 	= (($inputEndDate == "") ? $setDate['date2'] : $inputEndDate);
-            
-            $startdate = '9/8/2020 12:00:00 am';
-            $enddate = '9/9/2020 12:00:00 am';
-        
-//            echo $startdate;
-//            echo $enddate;
-//            exit();
-            $data = array (
-                'dashboard' => $this->Adv_Model->get_list($startdate, $enddate, $campaign_id),
-                'media_cost' => $this->Adv_Model->get_t_mediacost($startdate, $enddate, $campaign_id),
-                'conversion'    => $this->Adv_Model->get_t_conversion($startdate, $enddate, $campaign_id),
-                'ad_imp'    => $this->Adv_Model->get_ad_imp($startdate, $enddate, $campaign_id),
-                
+        $accList = $this->Adv_Model->get_account_list();
+
+        foreach ($accList as $al){
+
+            $tb = array(
+                'camp_report' => $this->Adv_Model->get_record_table($al['prefix'] . '_campaign_report'),
+                'version_report' => $this->Adv_Model->get_record_table($al['prefix'] . '_campaign_version'),
+                'unique_report' => $this->Adv_Model->get_record_table($al['prefix'] . '_campaign_unique'),
+                'video_report' => $this->Adv_Model->get_record_table($al['prefix'] . '_campaign_video'),
             );
-        
             
-            $filter = array (
-                'filter' => $this->Adv_Model->get_site_name(),
-                'start'  => $startdate,
-                'end'    => $enddate,
-                'siteselect' => $campaign_id
-            );
-                
-			$this->load->view('public/template/header',$filter);
-        	$this->load->view('public/dashboard/dashboard_main',$data);
-        	$this->load->view('public/template/footer');
+            $acn = array ($al['accountname']);
+            $pf = array ($al['prefix']);
+            
+            $tb_info = array (
+                     'account_list' => $acn,
+                     'prefix' => $pf,
+                     'tbl_rec' => $tb,
+                );
+            $collection_tbl_info[] = $tb_info;
+        }
+        
+//        echo '<pre>';
+//        print_r ($collection_tbl_info);
+//        echo '</pre>';
+//        exit();
+
+        $data = array (
+            'account_list' => $accList,
+            'collection' => $collection_tbl_info
+        );
+
+
+        $this->load->view('public/template/header');
+        $this->load->view('public/dashboard/dashboard_main',$data);
+        $this->load->view('public/template/footer');
     }
     
-    public function getChartPerformance(){
-        header('Access-Control-Allow-Origin: *');
-          
-        $arr = array(
-				'dspAdvertiserIdList' 	=>  $this->input->get('dspList'),
-				'start'					=> 	$this->input->get('start'),
-				'end'					=> 	$this->input->get('end'),
-                'brand'                 =>  $this->input->get('brand'),
-                'typeData'              =>  $this->input->get('typeData')
-       );
+    public function addnew()
+	{
         
-        $result = $this->Advertisersummary->performanceChart($arr);
+        $this->load->view('public/template/header');
+        $this->load->view('public/dashboard/addnew');
+        $this->load->view('public/template/footer');
         
-        echo json_encode($result, JSON_PRETTY_PRINT);
     }
     
-    public function getSelectedBrand(){
-        //$this->load->view('public/template/footer');
-        header('Access-Control-Allow-Origin: *');
-        $result = $this->Advertisersummary->getBrandName($this->input->get('adv'));
+    public function accAddProg(){
         
-        echo json_encode($result, JSON_PRETTY_PRINT);
         
+        $prefix = strtolower($this->input->post('prefix'));
+        $conv = $this->input->post('conv');
+        $accname = $this->input->post('accountName');
+        
+        
+        $dataInsert = array(
+                'accountname'    => $accname,
+                'prefix'         => $prefix,
+                'conversion_col' => $conv,
+                'in_by'          => $this->session->userdata('userId')
+            );
+            if($this->Adv_Model->addAccount($dataInsert, $prefix, $conv)){
+                $response['status'] = TRUE;
+            }else{
+                $response['status'] = FALSE;
+                $response['msg'] = 'smoething when wrong';
+            }   
+        echo json_encode($response);
     }
-   
         
 }

@@ -25,7 +25,6 @@
                                             <th width="20%">Full Name</th>
                                             <th width="15%">Email</th>
                                             <th width="15%">Status</th>
-                                            <th>Role</th>
                                             
                                             <th>Action </th>
                                             
@@ -39,7 +38,7 @@
                                              <td><?=$list['firstname']?>&nbsp;<?=$list['lastname']?></td>
                                              <td><?=$list['email']?></td>
                                              <td><?php (($list['status'] == 1) ? 'Enable' : 'Disable') ?></td>
-                                             <td><?php (($list['user_role'] == 0) ? 'Super Admin' : 'User') ?></td>
+                                            
                                              
                                              <td> <button style="width:80px;" type="button" onclick="window.location.href='<?=base_url('user/edit/' .$list['userid'])?>'" class="btn btn-props btn-fill ">Edit</button> 
                                              <button style="width:80px;" type="button" onclick="deleteuser(<?=$list['userid']?>, '<?=$list['firstname']?>')"  class="btn btn-warning btn-fill ">Delete</button> 

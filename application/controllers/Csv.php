@@ -21,72 +21,54 @@ class Csv extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-//		$logged = $this->session->userdata('userLogged');
-//	 	if(!$logged){
-//	 		redirect("/login");
-//		 }
         $this->load->model('Adv_Model');
 	}
 	
 	public function index()
 	{
-    
-//		if ($this->session->userdata('email') == ""){
-//			redirect('/login', 'refresh');
-//		}
-//			
-//            
-//        $campaign_id 	 = $this->input->get('campaign_id');
-//
-//        $startdate = '9/8/2020 12:00:00 am';
-//        $enddate = '9/9/2020 12:00:00 am';
-//
-//        $data = array (
-//            'dashboard' => $this->Adv_Model->get_list($startdate, $enddate, $campaign_id),
-//            'media_cost' => $this->Adv_Model->get_t_mediacost($startdate, $enddate, $campaign_id),
-//            'conversion'    => $this->Adv_Model->get_t_conversion($startdate, $enddate, $campaign_id),
-//            'ad_imp'    => $this->Adv_Model->get_ad_imp($startdate, $enddate, $campaign_id),
-//
-//        );
-//
-//        $filter = array (
-//            'filter' => $this->Adv_Model->get_site_name(),
-//            'start'  => $startdate,
-//            'end'    => $enddate,
-//            'siteselect' => $campaign_id
-//        );
-//
-//        $this->load->view('public/template/header',$filter);
-//        $this->load->view('public/dashboard/csv_view',$data);
-//        $this->load->view('public/template/footer');
+        redirect('/');
     }
     
-    public function fetch_campaign_report(){
-        $result = $this->process_campaign_report('http://3.128.254.22/files/campaign_report/Djarum_campaign_report_20201028073323492.csv');
+    public function fetch_campaign_report($prefix=''){
+        
+        $tblacc = $prefix . '_campaign_report';
+        $dir    = 'files/' . $prefix . '/campaign_report/';
+        
+        $files1 = array_diff(scandir($dir,1), array('..', '.'));
+        $conversion_col = $this->Adv_Model->get_conversion_cols($prefix);
+        
+        $result = $this->process_campaign_report($dir . $files1[0],$tblacc, $conversion_col['conversion_col']);
         echo json_encode($result, JSON_PRETTY_PRINT);
     }
     
-    public function fetch_version_report(){
-        $result = $this->process_version_report('http://localhost:8899/adv_dashboard/assets/csv/Djarum_Version_Report_20201028073411508.csv');
+    public function fetch_version_report($prefix=''){
+        
+        $tblacc = $prefix . '_campaign_version';
+        $dir    = 'files/' . $prefix . '/campaign_version/';
+        
+        $files1 = array_diff(scandir($dir,1), array('..', '.'));
+        $conversion_col = $this->Adv_Model->get_conversion_cols($prefix);
+        
+        $result = $this->process_version_report($dir . $files1[0],$tblacc, $conversion_col['conversion_col']);
         echo json_encode($result, JSON_PRETTY_PRINT);
     }
     
-    public function fetch_video_report(){
-        $result = $this->process_video_report('http://localhost:8899/adv_dashboard/assets/csv/UnileverPH_Dove_Video_Report_20201028093849818.csv');
+    public function fetch_video_report($accname=''){
+        $tblacc = $accname . '_campaign_video';
+        $result = $this->process_video_report('http://localhost:8899/adv_dashboard/files/UnileverPH_Dove_Video_Report_20201028093849818.csv',$tblacc);
         echo json_encode($result, JSON_PRETTY_PRINT);
     }
     
-    public function fetch_unique_report(){
-        $result = $this->process_unique_report('http://localhost:8899/adv_dashboard/assets/csv/TemasekSG_unique_report.csv');
+    public function fetch_unique_report($accname=''){
+        $tblacc = $accname . '_campaign_unique';
+        $result = $this->process_unique_report('http://localhost:8899/adv_dashboard/files/TemasekSG_unique_report.csv',$tblacc);
         echo json_encode($result, JSON_PRETTY_PRINT);
     }
     
-    public function process_campaign_report($filepath)
+    public function process_campaign_report($filepath, $accname, $conv_col='0')
 	{
 		
             $file = $filepath;
-
-
             $i = 0;
             $handle = fopen($file, "r");
             
@@ -117,26 +99,25 @@ class Csv extends CI_Controller {
                     }
                 }
                 
-                unset($data_conversion);
-                unset($dt);
+                $old_date = $row[0];
+                $old_date_timestamp = strtotime($old_date);
+                $new_date = date('Y-m-d', $old_date_timestamp); 
                 
-                for ($conv = 0; $conv <= (sizeOf($metricName)-1); $conv++){
-                        $dt = [
-                            $metricName[$conv] => $row[30+$conv]
-                        ];
-                        $data_conversion[] = $dt;         
-                }
-
+                $camp_start = strtotime($row[7]);
+                $camp_end = strtotime($row[8]);
+                $new_cstart = date('Y-m-d', $camp_start); 
+                $new_estart = date('Y-m-d', $camp_end); 
+                
                 $data = [
-                    'day' => $row[0],
+                    'day' => $new_date,
                     'accountId' => $row[1],
                     'accountName' => $row[2],
                     'advertiserId' => $row[3],
                     'advertiserName' => $row[4],
                     'campaignId' => $row[5],
                     'campaignName' => $row[6],
-                    'campaignStartDate' => $row[7],
-                    'campaignEndDate' => $row[8],
+                    'campaignStartDate' => $new_cstart,
+                    'campaignEndDate' => $new_estart,
                     'siteId' => $row[9],
                     'siteName' => $row[10],
                     'adId' => $row[11],
@@ -158,29 +139,37 @@ class Csv extends CI_Controller {
                     'ecpa' => $row[27],
                     'ecpm' => $row[28],
                     'totalProfit' => numnegative($row[29]),
-                    'date' => $splited[0],
-                    'site' => $splited[1],
-                    'siteSection' => $splited[2],
-                    'dimension' => $splited[3],
-                    'device' => $splited[4],
-                    'adFormat' => $splited[5],
-                    'phase' => $splited[6],
-                    'targeting' => $splited[7],
-                    'audience' => $splited[8],
-                    'conversion' => json_encode($data_conversion),
+                    'placementNameSplit_1' => $splited[0],
+                    'placementNameSplit_2' => $splited[1],
+                    'placementNameSplit_3' => $splited[2],
+                    'placementNameSplit_4' => $splited[3],
+                    'placementNameSplit_5' => $splited[4],
+                    'placementNameSplit_6' => $splited[5],
+                    'placementNameSplit_7' => $splited[6],
+                    'placementNameSplit_8' => $splited[7],
+                    'placementNameSplit_9' => $splited[8],
                 ];
+              
+              $findata = $data;
+              for ($conv = 0; $conv <= (sizeOf($metricName)-1); $conv++){
+                        $dt = [
+                            'conversion_name_' . ($conv+1) => $metricName[$conv],
+                            'conversion_value_' . ($conv+1) => numnegative($row[30 + $conv]),
+                            
+                        ];
+                        
+                        $findata = array_merge($findata, $dt);
+                        unset($dt);
+              }
                 
-              //echo strstr( $row[29], '(');
-              //echo numnegative($row[29]);
-              $insert = $this->Adv_Model->insertCSV('campaign_report', $data);
-                
+              $insert = $this->Adv_Model->insertCSV($accname, $findata);
             }
 
             fclose($handle);
             return $insert;
 	}
     
-    public function process_version_report($filepath)
+    public function process_version_report($filepath, $accname, $conv_col='0')
 	{
 		
             $file = $filepath;
@@ -208,6 +197,8 @@ class Csv extends CI_Controller {
                 $splited[4] = 'Undefined';
                 $splited[5] = 'Undefined';
                 $splited[6] = 'Undefined';
+                $splited[7] = 'Undefined';
+                $splited[8] = 'Undefined';
                 
                 if ($row[17] <> 'Undefined') {
                     $tmpsplited = explode('_', $row[17]);                    
@@ -216,26 +207,25 @@ class Csv extends CI_Controller {
                     }
                 }
  
-                unset($data_conversion);
-                unset($dt);
+                $old_date = $row[0];
+                $old_date_timestamp = strtotime($old_date);
+                $new_date = date('Y-m-d', $old_date_timestamp); 
                 
-                for ($conv = 0; $conv <= (sizeOf($metricName)-1); $conv++){
-                        $dt = [
-                            $metricName[$conv] => $row[26+$conv]
-                        ];
-                        $data_conversion[] = $dt;         
-                }
-     
+                $camp_start = strtotime($row[7]);
+                $camp_end = strtotime($row[8]);
+                $new_cstart = date('Y-m-d', $camp_start); 
+                $new_estart = date('Y-m-d', $camp_end); 
+                
                 $data = [
-                    'day' => $row[0],
+                    'day' => $new_date,
                     'accountId' => $row[1],
                     'accountName' => $row[2],
                     'advertiserId' => $row[3],
                     'advertiserName' => $row[4],
                     'campaignId' => $row[5],
                     'campaignName' => $row[6],
-                    'campaignStartDate' => $row[7],
-                    'campaignEndDate' => $row[8],
+                    'campaignStartDate' => $new_cstart,
+                    'campaignEndDate' => $new_estart,
                     'siteId' => $row[9],
                     'siteName' => $row[10],
                     'adId' => $row[11],
@@ -253,17 +243,31 @@ class Csv extends CI_Controller {
                     'conversionRevenue' => $row[23],
                     'postClickConversion' => $row[24],
                     'postImpresionConversion' => $row[25],
-                    'date' => $splited[0],
-                    'bannerType' => $splited[1],
-                    'size' => $splited[2],
-                    'phase' => $splited[3],
-                    'audience' => $splited[4],
-                    'ab_test1' => $splited[5],
-                    'ab_test2' => $splited[6],
-                    'conversion' => json_encode($data_conversion),
+                    'versNameSplit_1' => $splited[0],
+                    'versNameSplit_2' => $splited[1],
+                    'versNameSplit_3' => $splited[2],
+                    'versNameSplit_4' => $splited[3],
+                    'versNameSplit_5' => $splited[4],
+                    'versNameSplit_6' => $splited[5],
+                    'versNameSplit_7' => $splited[6],
+                    'versNameSplit_8' => $splited[7],
+                    'versNameSplit_9' => $splited[8],
                 ];
                 
-              $insert = $this->Adv_Model->insertCSV('campaign_version', $data);
+              $findata = $data;
+              for ($conv = 0; $conv <= (sizeOf($metricName)-1); $conv++){
+                        $dt = [
+                            'conversion_name_' . ($conv+1) => $metricName[$conv],
+                            'conversion_value_' . ($conv+1) => numnegative($row[26 + $conv]),
+                            
+                        ];
+                        
+                        $findata = array_merge($findata, $dt);
+                        unset($dt);
+              }
+                
+              $insert = $this->Adv_Model->insertCSV($accname, $findata);
+                
                 
             }
 
@@ -271,7 +275,7 @@ class Csv extends CI_Controller {
             return $insert;
 	}
    
-    public function process_video_report($filepath)
+    public function process_video_report($filepath, $accname)
 	{
 		
             $file = $filepath;
@@ -301,16 +305,25 @@ class Csv extends CI_Controller {
                     }
                 }
  
+                $old_date = $row[0];
+                $old_date_timestamp = strtotime($old_date);
+                $new_date = date('Y-m-d', $old_date_timestamp); 
+                
+                $camp_start = strtotime($row[7]);
+                $camp_end = strtotime($row[8]);
+                $new_cstart = date('Y-m-d', $camp_start); 
+                $new_estart = date('Y-m-d', $camp_end); 
+                
                 $data = [
-                    'day' => $row[0],
+                    'day' => $new_date,
                     'accountId' => $row[1],
                     'accountName' => $row[2],
                     'advertiserId' => $row[3],
                     'advertiserName' => $row[4],
                     'campaignId' => $row[5],
                     'campaignName' => $row[6],
-                    'campaignStartDate' => $row[7],
-                    'campaignEndDate' => $row[8],
+                    'campaignStartDate' => $new_cstart,
+                    'campaignEndDate' => $new_estart,
                     'siteId' => $row[9],
                     'siteName' => $row[10],
                     'adId' => $row[11],
@@ -339,18 +352,18 @@ class Csv extends CI_Controller {
                     'videoPlayed75' => $row[34],
                     'videoPlayedFull' => $row[35],
                     'videoAverageDuration' => $row[36],
-                    'date' => $splited[0],
-                    'site' => $splited[1],
-                    'siteSection' => $splited[2],
-                    'dimension' => $splited[3],
-                    'device' => $splited[4],
-                    'adFormat' => $splited[5],
-                    'phase' => $splited[6],
-                    'targeting' => $splited[7],
-                    'audience' => $splited[8],
+                    'placementNameSplit_1' => $splited[0],
+                    'placementNameSplit_2' => $splited[1],
+                    'placementNameSplit_3' => $splited[2],
+                    'placementNameSplit_4' => $splited[3],
+                    'placementNameSplit_5' => $splited[4],
+                    'placementNameSplit_6' => $splited[5],
+                    'placementNameSplit_7' => $splited[6],
+                    'placementNameSplit_8' => $splited[7],
+                    'placementNameSplit_9' => $splited[8],
                 ];
                 
-              $insert = $this->Adv_Model->insertCSV('campaign_video', $data);
+              $insert = $this->Adv_Model->insertCSV($accname, $data);
                 
             }
 
@@ -358,7 +371,7 @@ class Csv extends CI_Controller {
             return $insert;
 	}
     
-    public function process_unique_report($filepath)
+    public function process_unique_report($filepath, $accname)
         {
 		
             $file = $filepath;
@@ -369,6 +382,7 @@ class Csv extends CI_Controller {
             while (($row = fgetcsv($handle))) {
                 $i++;
 
+                
                 if ($i == 1) continue;
                 
                 $splited[0] = 'Undefined';
@@ -388,15 +402,24 @@ class Csv extends CI_Controller {
                     }
                 }
  
+                $old_date = $row[0];
+                $old_date_timestamp = strtotime($old_date);
+                $new_date = date('Y-m-d', $old_date_timestamp); 
+                
+                $camp_start = strtotime($row[6]);
+                $camp_end = strtotime($row[7]);
+                $new_cstart = date('Y-m-d', $camp_start); 
+                $new_estart = date('Y-m-d', $camp_end);
+                
                 $data = [
-                    'accountId' => $row[0],
+                    'accountId' => $new_date,
                     'accountName' => $row[1],
                     'advertiserId' => $row[2],
                     'advertiserName' => $row[3],
                     'campaignId' => $row[4],
                     'campaignName' => $row[5],
-                    'campaignStartDate' => $row[6],
-                    'campaignEndDate' => $row[7],
+                    'campaignStartDate' => $new_cstart,
+                    'campaignEndDate' => $new_estart,
                     'siteId' => $row[8],
                     'siteName' => $row[9],
                     'adId' => $row[10],
@@ -426,18 +449,18 @@ class Csv extends CI_Controller {
                     'videoPlayed75' => $row[34],
                     'videoPlayedFull' => $row[35],
                     'videoAverageDuration' => $row[36],
-                    'date' => $splited[0],
-                    'site' => $splited[1],
-                    'siteSection' => $splited[2],
-                    'dimension' => $splited[3],
-                    'device' => $splited[4],
-                    'adFormat' => $splited[5],
-                    'phase' => $splited[6],
-                    'targeting' => $splited[7],
-                    'audience' => $splited[8],
+                    'placementNameSplit_1' => $splited[0],
+                    'placementNameSplit_2' => $splited[1],
+                    'placementNameSplit_3' => $splited[2],
+                    'placementNameSplit_4' => $splited[3],
+                    'placementNameSplit_5' => $splited[4],
+                    'placementNameSplit_6' => $splited[5],
+                    'placementNameSplit_7' => $splited[6],
+                    'placementNameSplit_8' => $splited[7],
+                    'placementNameSplit_9' => $splited[8],
                 ];
                 
-              $insert = $this->Adv_Model->insertCSV('campaign_unique', $data);
+              $insert = $this->Adv_Model->insertCSV($accname, $data);
                 
             }
 

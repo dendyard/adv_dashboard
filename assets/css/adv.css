@@ -208,9 +208,9 @@ table{
 }
 
 .card-body{
-    text-align: center;
+    
     height: auto;
-    padding-top: 14px;
+    padding: 15px;
 }
 
 .card-body p {

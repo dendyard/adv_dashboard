@@ -79,22 +79,10 @@
                  ?>
                     <a href="<?php echo base_url(); ?>">
                         <i class="pe-7s-graph"></i>
-                        <p>Dashboard</p>
+                        <p>Database Setting</p>
                     </a>
                 </li>
                 
-                <?php 
-                    if (($this->uri->segment(1)) == 'mapping'){
-                        echo '<li class="active">';
-                    }else{
-                        echo '<li>';
-                    }
-                 ?>
-                    <a href="<?php echo base_url('mapping'); ?>">
-                        <i class="pe-7s-note2"></i>
-                        <p>Site Name Mapping</p>
-                    </a>
-                </li>
                 
                 
                     <?php 
@@ -120,6 +108,7 @@
     	</div>
     </div>
         <div class="main-panel" >
+<!--
         
         <nav  class="navbar navbar-default navbar-filter shadow-lg">
             
@@ -153,6 +142,9 @@
                     
             </div>
         </nav>
+-->
+<!--
+            
             <div class="container-fluid">
                 <div class="row" id='progress_anim'>
                    <img src="<?php echo base_url() ?>/assets/images/progress.gif" style='position: absolute;
@@ -166,10 +158,12 @@
                     <div id="bg-wth-full"></div>
                 </div>
                 
+-->
 
    
                 <!-- Filter Section -->
                 
+<!--
 <div class="row">
     <div <?php if($this->uri->segment(1) == "mapping" || $this->uri->segment(1) == "user" || $this->uri->segment(2) == "detail" || $this->uri->segment(2) == "video" || $this->uri->segment(2) == "display" || $this->uri->segment(2) == "trueview" ){echo 'style=display:block;';}else{echo 'style=display:none;';} ?> class="filter-mobile-none">Filter not available</div>
     
@@ -232,8 +226,9 @@
     
     <?php } ?>
 </div>
+-->
 
     
 <!-- End of Filter Section -->
-<div class="content mt-10">
+<div class="content">
             

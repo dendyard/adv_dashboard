@@ -5744,7 +5744,7 @@ h1 .subtitle {
 
 .btn {
     border-width: 1px;
-    background-color: transparent;
+    background-color: #0389e1;
     font-weight: 400;
     opacity: 0.8;
     filter: alpha(opacity=80);
@@ -5755,9 +5755,8 @@ h1 .subtitle {
 
 .btn:hover, .btn:focus, .btn:active, .btn.active, .btn:active:focus, .btn:active:hover, .btn.active:focus, .btn.active:hover,
 .open > .btn.dropdown-toggle {
-    background-color: transparent;
-    color: #797979;
-    border-color: #797979;
+        border-color: #0389e1;
+    color: #fff;
 }
 
 .btn.disabled, .btn.disabled:hover, .btn.disabled:focus, .btn.disabled.focus, .btn.disabled:active, .btn.disabled.active, .btn:disabled, .btn:disabled:hover, .btn:disabled:focus, .btn:disabled.focus, .btn:disabled:active, .btn:disabled.active, .btn[disabled], .btn[disabled]:hover, .btn[disabled]:focus, .btn[disabled].focus, .btn[disabled]:active, .btn[disabled].active,
@@ -5907,7 +5906,7 @@ fieldset[disabled] .btn-success.active {
 
 .btn-info {
     border-color: #53c7a1;
-    color: #53c7a1;
+    color: #fff;
 }
 
 .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .btn-info:active:focus, .btn-info:active:hover, .btn-info.active:focus, .btn-info.active:hover,

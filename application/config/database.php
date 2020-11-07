@@ -74,12 +74,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'advdashboarddb.cimkml4gqjsb.ap-southeast-1.rds.amazonaws.com',
+	'hostname' => 'advdashboard-mysql2020.c2afuvudb6ry.us-east-2.rds.amazonaws.com',
 	'username' => 'advdashboard',
-	'password' => '55ndTdnRqP33tz1jxx2D',
-	'database' => 'advdashboard_user',
+	'password' => 'KEINdJS2V2SovVv5q9gO',
+	'database' => 'advreport_db',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -97,4 +98,28 @@ $db['default'] = array(
     'post'     => '5432'
 );
 
-
+//
+//$db['default'] = array(
+//	'dsn'	=> '',
+//	'hostname' => 'localhost',
+//	'username' => 'root',
+//	'password' => 'root',
+//	'database' => 'adv_reports',
+//	'dbdriver' => 'mysqli',
+//	'dbprefix' => '',
+//	'pconnect' => FALSE,
+//	'db_debug' => (ENVIRONMENT !== 'production'),
+//	'cache_on' => FALSE,
+//	'cachedir' => '',
+//	'char_set' => 'utf8',
+//	'dbcollat' => 'utf8_general_ci',
+//	'swap_pre' => '',
+//	'encrypt' => FALSE,
+//	'compress' => FALSE,
+//	'stricton' => FALSE,
+//	'failover' => array(),
+//	'save_queries' => TRUE,
+//    'post'     => '5432'
+//);
+//
+//

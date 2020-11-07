@@ -35,38 +35,20 @@
                                         </div>
                                     </div>
                                     
-                                    <?php if ($this->session->userdata('role') == "0"){ ?>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>User Role</label>
-                                            <div class="checkbox checkbox_select">
-                                            
-                                            <select name="role" id="role" class="selectpicker" data-title="Select User Role" required="">       
-                                                
-                                                
-                                                <option <?=(($datauser['user_role'] == 0) ? 'selected=true' : ''); ?> title="Super Admin"  value="0">Super Admin</option>
-                                                
-                                                <option title="User" <?=(($datauser['user_role'] == 1) ? 'selected=true' : ''); ?> value="1">User</option>
-                                               
-                                                </select> 
-                                            
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <?php } ?>    
+                                     
                                 </div>
                                 <div class="row user-form">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>User Password</label>
-                                            <input id='password' value="<?=$datauser['userpass']?>" type="password" name="password" class="form-control" placeholder="Password" required="" >
+                                            <input id='password' value="<?=$datauser['password']?>" type="password" name="password" class="form-control" placeholder="Password" required="" >
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Confirm Password</label>
-                                            <input id='confirmPassword' value='<?=$datauser['userpass']?>'  type="password" name="confirmPassword" class="form-control" placeholder="Password" required="" >
+                                            <input id='confirmPassword' value='<?=$datauser['password']?>'  type="password" name="confirmPassword" class="form-control" placeholder="Password" required="" >
                                         </div>
                                     </div>
                                     
