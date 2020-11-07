@@ -53,15 +53,26 @@ class Csv extends CI_Controller {
         echo json_encode($result, JSON_PRETTY_PRINT);
     }
     
-    public function fetch_video_report($accname=''){
-        $tblacc = $accname . '_campaign_video';
-        $result = $this->process_video_report('http://localhost:8899/adv_dashboard/files/UnileverPH_Dove_Video_Report_20201028093849818.csv',$tblacc);
+    public function fetch_video_report($prefix=''){
+        
+        $tblacc = $prefix . '_campaign_video';
+        $dir    = 'files/' . $prefix . '/campaign_video/';
+        
+        $files1 = array_diff(scandir($dir,1), array('..', '.'));
+        
+        
+        $result = $this->process_video_report($dir . $files1[0], $tblacc);
         echo json_encode($result, JSON_PRETTY_PRINT);
     }
     
-    public function fetch_unique_report($accname=''){
-        $tblacc = $accname . '_campaign_unique';
-        $result = $this->process_unique_report('http://localhost:8899/adv_dashboard/files/TemasekSG_unique_report.csv',$tblacc);
+    public function fetch_unique_report($prefix=''){
+        
+        $tblacc = $prefix . '_campaign_unique';
+        $dir    = 'files/' . $prefix . '/campaign_unique/';
+        
+        $files1 = array_diff(scandir($dir,1), array('..', '.'));
+        
+        $result = $this->process_video_report($dir . $files1[0], $tblacc);
         echo json_encode($result, JSON_PRETTY_PRINT);
     }
     
