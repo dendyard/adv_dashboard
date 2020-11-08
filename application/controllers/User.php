@@ -79,24 +79,18 @@ class User extends CI_Controller {
     
     public function userUpsert($uid = ''){
         
-        
-        
         $password        = $this->input->post('password');
         $firstName       = $this->input->post('firstName');
         $lastName        = $this->input->post('lastName');
-        $role            = $this->input->post('role');
         $email           = $this->input->post('email');
-                        
-        
         
         if ($uid == '') {
             $dataInsert = array(
                 'firstname'     => $firstName,
                 'lastname'      => $lastName,
                 'email'         => $email,
-                'user_role'     => $role,
-                'userpass'      => md5($password),
-                'status'        =>  1,
+                'password'      => md5($password),
+                'status'        => 1,
                 'createby'      => $this->session->userdata('userId'),
                 'createdate'    => date("Y-m-d H:i:s"),
             );
@@ -107,21 +101,13 @@ class User extends CI_Controller {
                 $response['msg'] = 'smoething when wrong';
             }    
         }else{
-//           userid
-//           password
-//           oldpass
-//           firstName
-//           lastName
-//           role
-//           email
-               
-            $oldpass         = $this->input->post('oldpass');      
+
+            $oldpass  = $this->input->post('oldpass');      
             $dataInsert = array(
                 'firstname'     => $firstName,
                 'lastname'      => $lastName,
                 'email'         => $email,
-                'user_role'     => $role,
-                'userpass'      => (($oldpass != $password) ? md5($password): $password),
+                'password'      => (($oldpass != $password) ? md5($password): $password),
                 'status'        =>  1,
                 'createby'      => $this->session->userdata('userId'),
                 'createdate'    => date("Y-m-d H:i:s"),
@@ -137,8 +123,6 @@ class User extends CI_Controller {
             }   
         }
         
-    
-            
         echo json_encode($response);
         
     }

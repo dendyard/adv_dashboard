@@ -103,7 +103,6 @@
         var confirmPassword = $("#confirmPassword").val();
         var firstName = $("#firstName").val();
         var lastName = $("#lastName").val();
-        var role = $("#role").val();
         var email = $("#email").val();
         var userid = $("#userid").val();
 
@@ -120,11 +119,6 @@
         }
         if(email == ""){
             toastr["warning"]("Please fill out email.", "Notification");
-            success = false;
-        }
-
-        if(role == ""){
-            toastr["warning"]("Please fill out role.", "Notification");
             success = false;
         }
 
@@ -154,17 +148,14 @@
 				data: {
                        userid : userid,    
                        password: password,
-                       oldpass : '<?=$datauser['userpass']?>',
+                       oldpass : '<?=$datauser['password']?>',
                        firstName: firstName, 
                        lastName: lastName, 
-                       role: role, 
                        email: email
                       }
 			}).done(function (result) {
 			if(result.status){
-				//window.setTimeout(function(){
-				    window.location.href = base_url + '/user';
-				//}, 3000);
+				window.location.href = base_url + '/user';
 			}
 			else{
                 console.log('helxx');

@@ -116,7 +116,6 @@
         var confirmPassword = $("#confirmPassword").val();
         var firstName = $("#firstName").val();
         var lastName = $("#lastName").val();
-        var role = $("#role").val();
         var email = $("#email").val();
 
 		var success = true;
@@ -132,11 +131,6 @@
         }
         if(email == ""){
             toastr["warning"]("Please fill out email.", "Notification");
-            success = false;
-        }
-
-        if(role == ""){
-            toastr["warning"]("Please fill out role.", "Notification");
             success = false;
         }
 
@@ -165,14 +159,11 @@
 				data: {password: password, 
                        firstName: firstName, 
                        lastName: lastName, 
-                       role: role, 
                        email: email
                       }
 			}).done(function (result) {
 			if(result.status){
-				//window.setTimeout(function(){
-				    window.location.href = base_url + '/user';
-				//}, 3000);
+               window.location.href = base_url + '/user';
 			}
 			else{
 				$('#load_post_ring').modal('hide');
