@@ -288,6 +288,7 @@ class Csv extends CI_Controller {
             }
 
             fclose($handle);
+            unlink($file);
             return $insert;
 	}
    
