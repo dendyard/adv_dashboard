@@ -82,14 +82,23 @@
                                             $unique_report = 'files/' . $als['prefix'][0] . '/campaign_unique/';
                                             $video_report = 'files/' . $als['prefix'][0] . '/campaign_video/';
                                             
-                                            $camp_files1 = array_diff(scandir($camp_report,1), array('..', '.'));
-                                            $version_files1 = array_diff(scandir($version_report,1), array('..', '.'));
-                                            $unique_files1 = array_diff(scandir($unique_report,1), array('..', '.'));
-                                            $video_files1 = array_diff(scandir($video_report,1), array('..', '.'));
+                                            $camp_files1 = array_diff(scandir($camp_report,1), array('..', '.', '.DS_Store'));
+                                            $version_files1 = array_diff(scandir($version_report,1), array('..', '.', '.DS_Store'));
+                                            $unique_files1 = array_diff(scandir($unique_report,1), array('..', '.', '.DS_Store'));
+                                            $video_files1 = array_diff(scandir($video_report,1), array('..', '.', '.DS_Store'));
                                             
 
-
-                                            foreach ($camp_files1 as $fl0) {
+                                            if (sizeOf($camp_files1) == 0 &&
+                                                sizeOf($version_files1) == 0 &&
+                                                sizeOf($unique_files1) == 0 &&
+                                                sizeOf($video_files1) == 0
+                                               ) {
+                                                echo '<div class="pre-list5">';
+                                                echo 'Wohoo! Nothing in Queue!';
+                                                echo '</div>';
+                                                echo '<br><br>';
+                                            }else{
+                                                foreach ($camp_files1 as $fl0) {
                                                 if ($fl0 == '.DS_Store') continue;
                                                 echo '<div class="pre-list1">';
                                                 print_r('Campaign Report : ' .  $fl0);
@@ -118,6 +127,10 @@
                                             }
                                             
                                             echo '<br><br>';
+                                                
+                                            }
+                                                
+                                            
                                             
                                         }
                                             

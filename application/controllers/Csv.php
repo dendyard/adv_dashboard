@@ -29,6 +29,108 @@ class Csv extends CI_Controller {
         redirect('/');
     }
     
+    public function scan_dir(){
+        
+        $accList = $this->Adv_Model->get_account_list();
+
+//        echo '<pre>';
+//        print_r ($accList);
+//        echo '</pre>';
+        $findata = [];
+        foreach ($accList as $al) {
+            //echo $al['prefix'];
+            
+            $camp_report = 'files/' . $al['prefix'] . '/campaign_report/';
+            $version_report = 'files/' . $al['prefix'] . '/campaign_version/';
+            $unique_report = 'files/' . $al['prefix'] . '/campaign_unique/';
+            $video_report = 'files/' . $al['prefix'] . '/campaign_video/';
+            
+            $camp_files1 = array_diff(scandir($camp_report,1), array('..', '.', '.DS_Store'));
+            $version_files1 = array_diff(scandir($version_report,1), array('..', '.', '.DS_Store'));
+            $unique_files1 = array_diff(scandir($unique_report,1), array('..', '.', '.DS_Store'));
+            $video_files1 = array_diff(scandir($video_report,1), array('..', '.', '.DS_Store'));
+            
+            
+            foreach ($camp_files1 as $fl0) {
+                $cr[] = $fl0;
+            }
+            
+            foreach ($version_files1 as $fl0) {
+                $cv[] = $fl0;
+            }
+            
+            foreach ($unique_files1 as $fl0) {
+                $cu[] = $fl0;
+            }
+            
+            foreach ($video_files1 as $fl0) {
+                $cd[] = $fl0;
+            }
+            
+            if (isset($cr)) {
+                $findata[] = array (
+                    'prefix' => $al['prefix'],
+                    'type' => 'campaign_report',
+                    'files' => $cr
+                );
+                unset($cr);    
+            }
+            
+            if (isset($cv)) {
+                $findata[] = array (
+                    'prefix' => $al['prefix'],
+                    'type' => 'campaign_version',
+                    'files' => $cv
+                );
+                unset($cv);    
+            }
+            
+            if (isset($cu)) {
+                $findata[] = array (
+                    'prefix' => $al['prefix'],
+                    'type' => 'campaign_unique',
+                    'files' => $cu
+                );
+                unset($cu);    
+            }
+            
+            if (isset($cd)) {
+                $findata[] = array (
+                    'prefix' => $al['prefix'],
+                    'type' => 'campaign_video',
+                    'files' => $cd
+                );
+                unset($cd);    
+            }
+            
+            
+        }
+        echo '<pre>';
+        print_r ($findata);
+        echo '</pre>';
+        
+        foreach ($findata as $listqu) {
+            foreach ($listqu['files'] as $rq) {
+                echo $listqu['prefix'] . '<br>';
+                echo $listqu['type'] . '<br>';
+                echo 'Total file : ' . $rq . '<br>';
+                echo '------------ <br>';
+                
+                if ($listqu['type'] == 'campaign_report') {
+                    $result = $this->fetch_campaign_report($listqu['prefix']);
+                }elseif ($listqu['type'] == 'campaign_version') {
+                    $result = $this->fetch_version_report($listqu['prefix']);
+                }elseif ($listqu['type'] == 'campaign_unique') {
+                    $result = $this->fetch_unique_report($listqu['prefix']);
+                }elseif ($listqu['type'] == 'campaign_video') {
+                    $result = $this->fetch_video_report($listqu['prefix']);
+                }
+                
+            }
+            
+        }
+    }
+    
     public function add_cron(){
         $insert = $this->Adv_Model->crond_add();
     }
@@ -42,7 +144,9 @@ class Csv extends CI_Controller {
         $conversion_col = $this->Adv_Model->get_conversion_cols($prefix);
         
         $result = $this->process_campaign_report($dir . $files1[0],$tblacc, $conversion_col['conversion_col']);
-        echo json_encode($result, JSON_PRETTY_PRINT);
+        
+        //echo json_encode($result, JSON_PRETTY_PRINT);
+        return $result;
     }
     
     public function fetch_version_report($prefix=''){
@@ -54,7 +158,8 @@ class Csv extends CI_Controller {
         $conversion_col = $this->Adv_Model->get_conversion_cols($prefix);
         
         $result = $this->process_version_report($dir . $files1[0],$tblacc, $conversion_col['conversion_col']);
-        echo json_encode($result, JSON_PRETTY_PRINT);
+        //echo json_encode($result, JSON_PRETTY_PRINT);
+        return $result;
     }
     
     public function fetch_video_report($prefix=''){
@@ -66,7 +171,10 @@ class Csv extends CI_Controller {
         
         
         $result = $this->process_video_report($dir . $files1[0], $tblacc);
-        echo json_encode($result, JSON_PRETTY_PRINT);
+        
+        //echo json_encode($result, JSON_PRETTY_PRINT);
+        return $result;
+        
     }
     
     public function fetch_unique_report($prefix=''){
@@ -77,7 +185,10 @@ class Csv extends CI_Controller {
         $files1 = array_diff(scandir($dir,1), array('..', '.'));
         
         $result = $this->process_unique_report($dir . $files1[0], $tblacc);
-        echo json_encode($result, JSON_PRETTY_PRINT);
+        
+        //echo json_encode($result, JSON_PRETTY_PRINT);
+        return $result;
+        
     }
     
     public function process_campaign_report($filepath, $accname, $conv_col='0')
@@ -385,6 +496,7 @@ class Csv extends CI_Controller {
             }
 
             fclose($handle);
+            unlink($file);
             return $insert;
 	}
     
@@ -482,6 +594,7 @@ class Csv extends CI_Controller {
             }
 
             fclose($handle);
+            unlink($file);
             return $insert;
     }
     
