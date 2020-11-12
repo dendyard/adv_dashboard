@@ -179,8 +179,9 @@ class Csv extends CI_Controller {
                 
               $insert = $this->Adv_Model->insertCSV($accname, $findata);
             }
-
+            
             fclose($handle);
+            unlink($handle);
             return $insert;
 	}
     
