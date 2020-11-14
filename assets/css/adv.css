@@ -205,6 +205,8 @@ table{
     margin-top: 13px;
     height: 63px;
     width: 96px;
+    background-color: #fff;
+    color: #53c7a1;
 }
 
 .card-body{
@@ -321,6 +323,15 @@ font-family: 'Roboto', sans-serif;
     font-family: roboto;
     font-weight: 700;
     font-size: 20px;
+}
+
+.open-data{
+    color: #53c7a1;
+    font-family: roboto;
+    font-size: 14px;
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 10px;
 }
 
 .tittle_box2{

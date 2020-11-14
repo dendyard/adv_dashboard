@@ -68,8 +68,32 @@ class Adv extends CI_Controller {
         $this->load->view('public/template/footer');
     }
     
+    public function detail(){
+        if ($this->session->userdata('email') == ""){
+			redirect('/login', 'refresh');
+		}
+        
+        $this->load->view('public/template/header');
+        $this->load->view('public/dashboard/dashboard_detail');
+        $this->load->view('public/template/footer');
+        
+    }
+    
+    public function manage($idaccount){
+        if ($this->session->userdata('email') == ""){
+			redirect('/login', 'refresh');
+		}
+        
+        $this->load->view('public/template/header');
+        $this->load->view('public/dashboard/delete');
+        $this->load->view('public/template/footer');
+    }
+    
     public function addnew()
 	{
+        if ($this->session->userdata('email') == ""){
+			redirect('/login', 'refresh');
+		}
         
         $this->load->view('public/template/header');
         $this->load->view('public/dashboard/addnew');

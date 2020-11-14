@@ -108,8 +108,8 @@
     	</div>
     </div>
         <div class="main-panel" >
-<!--
-        
+
+        <?php if($this->uri->segment(2) == "detail") { ?>
         <nav  class="navbar navbar-default navbar-filter shadow-lg">
             
             
@@ -142,8 +142,7 @@
                     
             </div>
         </nav>
--->
-<!--
+
             
             <div class="container-fluid">
                 <div class="row" id='progress_anim'>
@@ -158,39 +157,28 @@
                     <div id="bg-wth-full"></div>
                 </div>
                 
--->
+
 
    
-                <!-- Filter Section -->
+<!-- Filter Section -->
                 
-<!--
+
 <div class="row">
     <div <?php if($this->uri->segment(1) == "mapping" || $this->uri->segment(1) == "user" || $this->uri->segment(2) == "detail" || $this->uri->segment(2) == "video" || $this->uri->segment(2) == "display" || $this->uri->segment(2) == "trueview" ){echo 'style=display:block;';}else{echo 'style=display:none;';} ?> class="filter-mobile-none">Filter not available</div>
     
-    <?php if($this->uri->segment(1) == "") { ?>
+    
     <div class="filter-mobile">
 
     
     
     <div class="filter-elements brandsFilter">
-    <p class="filter-text-new2 " >Select Campaign</p>
+    <p class="filter-text-new2 " >Select Table Report</p>
     <div class="checkbox checkbox_select_filter">
     <select name="sitename_filter2" data-live-search="true" data-width="110%" id="sitename_filter2" class="selectpicker" title="Select Campaign"> 
-          <?php
-                    
-                    if($filter != ""){
-                        echo '<option selected value="all">All Campaign</option>';
-                        $i=0;
-                        foreach($filter as $sitename){
-                            echo '<option '  . (html_entity_decode($siteselect) == $sitename['campaign_id'] ? 'selected' : '') . ' value="'.$sitename['campaign_id'].'">'.$sitename['campaign_name'].'</option>';
-                            $i++;
-                            
-                        }
-                    }else {
-                        echo '<option selected value="0">No Campaign</option>';
-                    }
-
-                ?>
+        <option selected value="camp_report">Campaign Report</option>
+        <option value="camp_report">Version Report</option>
+        <option value="camp_report">Unique Report</option>
+        <option value="camp_report">Video Report</option>
     </select>
     </div>
     </div>
@@ -215,8 +203,8 @@
     </div>
         </div>
  
-<input id="customstart" type="hidden" value="<?php echo $start; ?>">
-<input id="customend" type="hidden" value="<?php echo $end; ?>">
+<input id="customstart" type="hidden" value="2020-01-01">
+<input id="customend" type="hidden" value="2020-01-01">
 
     <div class="filter-elements-right">
     <button id="summitFilter" type="button" class="btn btn-info filter-button">Filter</button>
@@ -224,9 +212,9 @@
         </div>
     </div>
     
-    <?php } ?>
+    
 </div>
--->
+<?php } ?>
 
     
 <!-- End of Filter Section -->

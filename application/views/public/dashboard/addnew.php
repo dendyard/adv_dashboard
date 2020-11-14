@@ -12,7 +12,7 @@
     line-height: 1.5;
     text-align: center;
     font-weight: 100;
-    color: blueviolet;">Caution : This process will a few table in Database, make sure you understand this feature functionality. If there any error during the process please contact The Web Developer</p>
+    color: blueviolet;">Caution : This process will add a few table in Database, make sure you understand this feature &amp; functionality. If there any error during the process please contact The Web Developer</p>
                                 </div>
                                 
                                 

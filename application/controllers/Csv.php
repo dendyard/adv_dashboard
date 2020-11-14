@@ -33,12 +33,8 @@ class Csv extends CI_Controller {
         
         $accList = $this->Adv_Model->get_account_list();
 
-//        echo '<pre>';
-//        print_r ($accList);
-//        echo '</pre>';
         $findata = [];
         foreach ($accList as $al) {
-            //echo $al['prefix'];
             
             $camp_report = 'files/' . $al['prefix'] . '/campaign_report/';
             $version_report = 'files/' . $al['prefix'] . '/campaign_version/';
@@ -105,17 +101,10 @@ class Csv extends CI_Controller {
             
             
         }
-        echo '<pre>';
-        print_r ($findata);
-        echo '</pre>';
-        
+
         foreach ($findata as $listqu) {
             foreach ($listqu['files'] as $rq) {
-                echo $listqu['prefix'] . '<br>';
-                echo $listqu['type'] . '<br>';
-                echo 'Total file : ' . $rq . '<br>';
-                echo '------------ <br>';
-                
+   
                 if ($listqu['type'] == 'campaign_report') {
                     $result = $this->fetch_campaign_report($listqu['prefix']);
                 }elseif ($listqu['type'] == 'campaign_version') {

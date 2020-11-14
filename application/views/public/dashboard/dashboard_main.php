@@ -25,36 +25,35 @@
                             <div class="col-md-4 center-block">
                                 <div class="card">
                                     <div class="header_purple">
-                                        <center>
-                                            
-                                        <p class="tittle_box"><?php echo $al['account_list'][0];?></p>
-                                        </center>
+                                        <p class="tittle_box pull-left"><?php echo $al['account_list'][0];?></p>
+                                        <p class="open-data pull-right"><a class="open-data" href="adv/manage/<?=$al['prefix'][0]?>">Manage</a></p>
                                     </div>
                                     <div class="card-body">
+                                        
                                         <small>Table prefix : <?=$al['prefix'][0]?></small><br>
                                         <table class="table table-bordered mt-8">
                                           <tbody>
 
-                                            <tr style="background-color: #faf0ca;">
+                                            <tr style="background-color: #fff;">
                                               <td>Campaign Report</td>
                                               <td class="text-rg"><?php echo number_format($al['tbl_rec']['camp_report']['t_record']);?> &nbsp;records</td>
                                             </tr>
-                                            <tr style="background-color: #f4d35e;">
+                                            <tr style="background-color: #fff;">
                                               <td>Version Report</td>
                                               <td class="text-rg"><?php echo number_format($al['tbl_rec']['version_report']['t_record']);?> &nbsp;records</td>
                                             </tr>
-                                            <tr style="background-color: #fcec52;">
+                                            <tr style="background-color: #fff;">
                                               <td>Unique Report</td>
                                               <td class="text-rg"><?php echo number_format($al['tbl_rec']['unique_report']['t_record']);?> &nbsp;records</td>
                                             </tr>
-                                            <tr style="background-color: #ee964b;">
+                                            <tr style="background-color: #fff;">
                                               <td>Video Report</td>
                                               <td class="text-rg"><?php echo number_format($al['tbl_rec']['video_report']['t_record']);?> &nbsp;records</td>
                                             </tr>
                                               
                                           </tbody>
                                         </table>
-
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +74,7 @@
                                         <?php 
                                         
                                         foreach ($d_collection as $als){
-                                           echo $als['account_list'][0];
+                                            
                                             
                                             $camp_report = 'files/' . $als['prefix'][0] . '/campaign_report/';
                                             $version_report = 'files/' . $als['prefix'][0] . '/campaign_version/';
@@ -93,11 +92,8 @@
                                                 sizeOf($unique_files1) == 0 &&
                                                 sizeOf($video_files1) == 0
                                                ) {
-                                                echo '<div class="pre-list5">';
-                                                echo 'Wohoo! Nothing in Queue!';
-                                                echo '</div>';
-                                                echo '<br><br>';
                                             }else{
+                                                echo $als['account_list'][0];
                                                 foreach ($camp_files1 as $fl0) {
                                                 if ($fl0 == '.DS_Store') continue;
                                                 echo '<div class="pre-list1">';
