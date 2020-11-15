@@ -1,12 +1,13 @@
 
                     <!-- Creative Size -->
+                    <div class="row"> 
                     
                         <div class="col-md-3 center-block" ></div>
                         <div class="col-md-6 center-block" >
                             <div class="card" style="height:100%;">
                                 <div class="header" style="margin-bottom:30px;">
                                     <center>
-                                    <h4 class="title_card">Delete Data</h4>
+                                    <h4 class="title_card">Delete Data of <?=$accountInfo['accountname']?></h4>
                                     </center>
                                     <p style="font-size: 12px;
     line-height: 1.5;
@@ -18,6 +19,9 @@
                                 
 <input id="customstart" type="hidden" value="">
 <input id="customend" type="hidden" value="">
+<input id="prefix" type="hidden" value="<?=$accountInfo['prefix']?>">
+<input id="a_name" type="hidden" value="<?=$accountInfo['accountname']?>">
+                                
             <div class="row user-form">
             <div class="col-md-6">
                 <select name="tblname" data-live-search="true" data-width="110%" id="tblname" class="selectpicker" title="Select Table"> 
@@ -71,6 +75,58 @@
                        <div class="col-md-3 center-block" ></div>
                     
                 </div>
+
+<div class="row"> 
+                    
+                        <div class="col-md-3 center-block" ></div>
+                        <div class="col-md-6 center-block" >
+                            <div class="card" style="height:100%;">
+                                <div class="header" style="margin-bottom:30px;">
+                                    <center>
+                                    <h4 class="title_card">Delete This Account</center>
+                                    <p style="font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+    font-weight: 100;
+    color: blueviolet;">Caution : This process will delete whole data of <?=$accountInfo['accountname']?>, make sure you understand this feature functionality. If there any error during the process please contact The Web Developer</p>
+</div>
+
+                                
+            <div class="row user-form">
+                           
+            </div>
+            <div class="row user-form">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+
+                        
+                        <p class="filter-text-new">Type Prefix selected account name</p>
+                        <input type="text" id='dropacc' name="dropacc" class="form-control">
+                        
+                        
+                    </div>
+                    
+                    
+                </div>                    
+                </div>
+                                
+                                <div class="row user-form">
+
+                                    <div class="col-md-12">
+                                        
+                                        <button style='width:130px;' onclick='dropdata();' class="btn btn-info btn-fill pull-right">Drop Table</button>        
+                                    </div>
+                                </div>
+                                
+                            </div>
+                                
+                       </div>
+                       <div class="col-md-3 center-block" ></div>
+                    
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -101,6 +157,40 @@
         return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24));
     }
     
+    
+    function dropdata(){
+        var validate = true;
+        if (dropacc.value == '' || dropacc.value != prefix.value) {
+            toastr["warning"]("You must Enter correct Prefix account to confirm this process", "Notification");
+            validate = false;
+        }else{
+            var r = confirm("Are you sure want to drop account : \n" + a_name.value + " ?");
+            if (r == true) {
+                $.ajax({
+				type: 'POST',
+				url: base_url + 'adv/accDropProg',
+				dataType: 'json',
+				data: {
+                       prefixs:prefix.value,
+                      }
+                }).done(function (result) {
+                    if(result.status){
+
+                        window.location.href = base_url + '/';
+
+                    }
+                    else{
+                        $('#load_post_ring').modal('hide');
+                        toastr["warning"](result.msg, "Notification");
+
+                    }
+                });
+            } 
+            
+            $('#load_post_ring').modal('hide'); 
+            
+        }
+    }
     
     function deletedata(){
         var slct = '';
@@ -152,81 +242,36 @@
         
         if (validate) {
             var r = confirm("Are you sure want to delete data : \n" + slct + " \n Period : " + d1 + " to " + d2 + " ?");
+            
             if (r == true) {
                 $.ajax({
 				type: 'POST',
 				url: base_url + 'adv/accDelProg',
 				dataType: 'json',
-				data: {accountName: accname,
-                       prefix:prefix,
-                       conv:conv_form,
+				data: {
+                       prefixs:prefix.value,
+                       tabName:tbl,
+                       startDate:d1,
+                       endDate:d2,
                       }
                 }).done(function (result) {
-                if(result.status){
-                    //window.setTimeout(function(){
+                    if(result.status){
+
                         window.location.href = base_url + '/';
-                    //}, 3000);
-                }
-                else{
-                    $('#load_post_ring').modal('hide');
-                    $.notify("Warning:" + result.msg, "warn");
-                }
+
+                    }
+                    else{
+                        $('#load_post_ring').modal('hide');
+                        toastr["warning"](result.msg, "Notification");
+
+                    }
                 });
             } 
+            
             $('#load_post_ring').modal('hide');    
         }
         
     }
-    
-    function addNewUser(){
-		$('#load_post_ring').modal('show');
-		var accname = $("#accountname").val();
-        var prefix = $("#prefix").val();
-        var conv_form = $("#conve").val();
-        
-		var success = true;
-        
-        if(accname == ""){
-            toastr["warning"]("Please fill out Account Name.", "Notification");
-            success = false;
-        }
-
-        if(prefix == ""){
-            toastr["warning"]("Please fill out Table Prefix name", "Notification");
-            success = false;
-        }
-
-        if(conv_form == ""){
-            toastr["warning"]("Please fill out Conversion column", "Notification");
-            success = false;
-        }
-
-        
-        if(success){
-        
-			$.ajax({
-				type: 'POST',
-				url: base_url + 'adv/accAddProg',
-				dataType: 'json',
-				data: {accountName: accname,
-                       prefix:prefix,
-                       conv:conv_form,
-                      }
-			}).done(function (result) {
-			if(result.status){
-				//window.setTimeout(function(){
-				    window.location.href = base_url + '/';
-				//}, 3000);
-			}
-			else{
-				$('#load_post_ring').modal('hide');
-				$.notify("Warning:" + result.msg, "warn");
-			}
-			});
-		}
-
-		return false;
-	}
     
     
 </script>

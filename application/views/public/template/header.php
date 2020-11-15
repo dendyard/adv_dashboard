@@ -40,7 +40,7 @@
     <link href="<?php echo base_url() ?>/assets/css/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
       
     <!-- Dashboard Custom CSS -->
-    <link href="<?php echo base_url() ?>/assets/css/adv.css?ver=2.0" rel="stylesheet">  
+    <link href="<?php echo base_url() ?>/assets/css/adv.css?ver=3.0" rel="stylesheet">  
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet">  
 
     <link href="<?php echo base_url() ?>/assets/css/toastr.min.css" rel="stylesheet" type="text/css" />

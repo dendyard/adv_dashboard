@@ -80,12 +80,17 @@ class Adv extends CI_Controller {
     }
     
     public function manage($idaccount){
+        
         if ($this->session->userdata('email') == ""){
 			redirect('/login', 'refresh');
 		}
         
+        $data = array (
+            'accountInfo' => $this->Adv_Model->get_acc_info($idaccount),
+        );
+        
         $this->load->view('public/template/header');
-        $this->load->view('public/dashboard/delete');
+        $this->load->view('public/dashboard/delete', $data);
         $this->load->view('public/template/footer');
     }
     
@@ -117,10 +122,107 @@ class Adv extends CI_Controller {
             );
             if($this->Adv_Model->addAccount($dataInsert, $prefix, $conv)){
                 $response['status'] = TRUE;
+                
+                if (mkdir("files/" . $prefix, 0757, true)){
+                    chmod("files/" . $prefix, 0757);   
+                    
+                    if (mkdir("files/" . $prefix . "/campaign_report", 0757, true)) {
+                        chmod("files/" . $prefix . "/campaign_report", 0757);    
+                    }
+                    if (mkdir("files/" . $prefix . "/campaign_version", 0757, true)) {
+                        chmod("files/" . $prefix . "/campaign_version", 0757);
+                    }
+                    if (mkdir("files/" . $prefix . "/campaign_unique", 0757, true)) {
+                        chmod("files/" . $prefix . "/campaign_unique", 0757);
+                    }
+                    if (mkdir("files/" . $prefix . "/campaign_video", 0757, true)) {
+                        chmod("files/" . $prefix . "/campaign_video", 0757);
+                    }
+                }
+                
+                $response['status'] = TRUE;
+                        
             }else{
                 $response['status'] = FALSE;
-                $response['msg'] = 'smoething when wrong';
+                $response['msg'] = 'something when wrong';
             }   
+        echo json_encode($response);
+    }
+    
+    
+    
+    public function accDelProg(){
+        
+        
+        $prefix = $this->input->post('prefixs');
+        $tbl_name = $this->input->post('prefixs') . '_' . $this->input->post('tabName');
+        $sDate = $this->input->post('startDate');
+        $eDate = $this->input->post('endDate');
+        
+        
+        if($this->Adv_Model->delDataTable($prefix, $tbl_name, $sDate, $eDate)){
+            $response['status'] = TRUE;
+            
+        }else{
+            $response['status'] = FALSE;
+            $response['msg'] = 'smoething when wrong';
+        }   
+        echo json_encode($response);
+    }
+    
+    public function delTree($prefix){
+        $dir_path = 'files/' . $prefix;
+        $files = array_diff(scandir($dir_path), array('.','..'));
+        foreach ($files as $file) {
+          (is_dir("$dir_path/$file")) ? $this->delTree("$prefix/$file") : unlink("$dir_path/$file");
+        }
+        return rmdir($dir_path);
+    }
+    
+    public function deletefileserver(){
+        $fn = $this->input->post('p_filename');
+        $prefix = $this->input->post('p_prefix');
+        $type = $this->input->post('p_type');
+        
+        
+        
+        switch($type){
+            case 'cr':
+                $fullpath = 'files/' . $prefix . '/campaign_report/' . $fn;
+                break;
+            case 'vr':
+                $fullpath =  'files/' . $prefix . '/campaign_version/' . $fn;
+                break;
+            case 'ur':
+                $fullpath =  'files/' . $prefix . '/campaign_unique/' . $fn;
+                break;
+            case 'dr':
+                $fullpath =  'files/' . $prefix . '/campaign_video/' . $fn;
+                break;
+        }
+        
+        if (unlink($fullpath)) {
+            $response['status'] = TRUE;
+        }else{
+            $response['msg'] = 'something when wrong';
+        }
+        echo json_encode($response);
+    }
+    
+    public function accDropProg(){
+        
+        
+        $prefix = $this->input->post('prefixs');
+        
+        if($this->Adv_Model->dropDataTable($prefix)){
+            
+            $this->delTree($prefix);    
+            $response['status'] = TRUE;
+            
+        }else{
+            $response['status'] = FALSE;
+            $response['msg'] = 'something when wrong';
+        }   
         echo json_encode($response);
     }
         

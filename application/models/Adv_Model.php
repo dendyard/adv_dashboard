@@ -273,10 +273,44 @@ $video_tbl = 'CREATE TABLE `' . $prefix . '_campaign_video` (
         return $result;
     }
     
+    public function get_acc_info($id) {
+        $sql0 = "SELECT * FROM master_account where prefix='" . $id . "'";
+        
+        $query0 = $this->db->query($sql0);
+        $result = $query0->row_array();
+        return $result;
+    }
+    
+    
     public function crond_add() {
         $sql0 = "INSERT INTO master_user (`username`) VALUES ('fromCron_Dashboard')";
         
         $query0 = $this->db->query($sql0);
+    }
+    
+    public function delDataTable($prefix, $tbl_name, $sDate, $eDate) {
+        $sql0 = "DELETE FROM " . $tbl_name . " WHERE in_date >='" . $sDate . " 00:00:00' AND in_date <='" . $eDate . " 23:59:59'";
+        
+        $query0 = $this->db->query($sql0);
+        return $query0;
+    }
+    
+    public function dropDataTable($prefix) {
+        $sql1 = "DROP TABLE " . $prefix . "_campaign_report";
+        $sql2 = "DROP TABLE " . $prefix . "_campaign_unique";
+        $sql3 = "DROP TABLE " . $prefix . "_campaign_version";
+        $sql4 = "DROP TABLE " . $prefix . "_campaign_video";
+        
+        $sql5 = "DELETE from master_account WHERE prefix='" . $prefix . "'";
+        
+        $query1 = $this->db->query($sql1);
+        $query2 = $this->db->query($sql2);
+        $query3 = $this->db->query($sql3);
+        $query4 = $this->db->query($sql4);
+        $query5 = $this->db->query($sql5);
+        
+        
+        return $query5;
     }
     
     

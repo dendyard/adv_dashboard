@@ -120,6 +120,101 @@ class Csv extends CI_Controller {
         }
     }
     
+    public function force_scan(){
+        
+        $accList = $this->Adv_Model->get_account_list();
+
+        $findata = [];
+        foreach ($accList as $al) {
+            
+            $camp_report = 'files/' . $al['prefix'] . '/campaign_report/';
+            $version_report = 'files/' . $al['prefix'] . '/campaign_version/';
+            $unique_report = 'files/' . $al['prefix'] . '/campaign_unique/';
+            $video_report = 'files/' . $al['prefix'] . '/campaign_video/';
+            
+            $camp_files1 = array_diff(scandir($camp_report,1), array('..', '.', '.DS_Store'));
+            $version_files1 = array_diff(scandir($version_report,1), array('..', '.', '.DS_Store'));
+            $unique_files1 = array_diff(scandir($unique_report,1), array('..', '.', '.DS_Store'));
+            $video_files1 = array_diff(scandir($video_report,1), array('..', '.', '.DS_Store'));
+            
+            
+            foreach ($camp_files1 as $fl0) {
+                $cr[] = $fl0;
+            }
+            
+            foreach ($version_files1 as $fl0) {
+                $cv[] = $fl0;
+            }
+            
+            foreach ($unique_files1 as $fl0) {
+                $cu[] = $fl0;
+            }
+            
+            foreach ($video_files1 as $fl0) {
+                $cd[] = $fl0;
+            }
+            
+            if (isset($cr)) {
+                $findata[] = array (
+                    'prefix' => $al['prefix'],
+                    'type' => 'campaign_report',
+                    'files' => $cr
+                );
+                unset($cr);    
+            }
+            
+            if (isset($cv)) {
+                $findata[] = array (
+                    'prefix' => $al['prefix'],
+                    'type' => 'campaign_version',
+                    'files' => $cv
+                );
+                unset($cv);    
+            }
+            
+            if (isset($cu)) {
+                $findata[] = array (
+                    'prefix' => $al['prefix'],
+                    'type' => 'campaign_unique',
+                    'files' => $cu
+                );
+                unset($cu);    
+            }
+            
+            if (isset($cd)) {
+                $findata[] = array (
+                    'prefix' => $al['prefix'],
+                    'type' => 'campaign_video',
+                    'files' => $cd
+                );
+                unset($cd);    
+            }
+            
+            
+        }
+
+        foreach ($findata as $listqu) {
+            foreach ($listqu['files'] as $rq) {
+   
+                if ($listqu['type'] == 'campaign_report') {
+                    $result = $this->fetch_campaign_report($listqu['prefix']);
+                }elseif ($listqu['type'] == 'campaign_version') {
+                    $result = $this->fetch_version_report($listqu['prefix']);
+                }elseif ($listqu['type'] == 'campaign_unique') {
+                    $result = $this->fetch_unique_report($listqu['prefix']);
+                }elseif ($listqu['type'] == 'campaign_video') {
+                    $result = $this->fetch_video_report($listqu['prefix']);
+                }
+                
+            }
+            
+        }
+        
+        $response['status'] = TRUE;
+        echo json_encode($response);
+        
+    }
+    
     public function add_cron(){
         $insert = $this->Adv_Model->crond_add();
     }
