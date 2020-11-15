@@ -16,7 +16,7 @@
                            
                         <?php 
                         
-                        //unlink('files/djarum_id/campaign_report/Djarum_Version_Report_20201102035217923.csv');
+                       rmdir('files/kyoob_id'); //unlink('files/djarum_id/campaign_report/Djarum_Version_Report_20201102035217923.csv');
                             foreach ($d_collection as $al){
                         ?>
                             <div class="col-md-4 center-block">
