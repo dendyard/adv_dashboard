@@ -123,20 +123,20 @@ class Adv extends CI_Controller {
             if($this->Adv_Model->addAccount($dataInsert, $prefix, $conv)){
                 $response['status'] = TRUE;
                 
-                if (mkdir("files/" . $prefix, 0757, true)){
-                    chmod("files/" . $prefix, 0757);   
+                if (mkdir("files/" . $prefix, 0777, true)){
+                    chmod("files/" . $prefix, 0777);   
                     
-                    if (mkdir("files/" . $prefix . "/campaign_report", 0757, true)) {
-                        chmod("files/" . $prefix . "/campaign_report", 0757);    
+                    if (mkdir("files/" . $prefix . "/campaign_report", 0777, true)) {
+                        chmod("files/" . $prefix . "/campaign_report", 0777);    
                     }
-                    if (mkdir("files/" . $prefix . "/campaign_version", 0757, true)) {
-                        chmod("files/" . $prefix . "/campaign_version", 0757);
+                    if (mkdir("files/" . $prefix . "/campaign_version", 0777, true)) {
+                        chmod("files/" . $prefix . "/campaign_version", 0777);
                     }
-                    if (mkdir("files/" . $prefix . "/campaign_unique", 0757, true)) {
-                        chmod("files/" . $prefix . "/campaign_unique", 0757);
+                    if (mkdir("files/" . $prefix . "/campaign_unique", 0777, true)) {
+                        chmod("files/" . $prefix . "/campaign_unique", 0777);
                     }
-                    if (mkdir("files/" . $prefix . "/campaign_video", 0757, true)) {
-                        chmod("files/" . $prefix . "/campaign_video", 0757);
+                    if (mkdir("files/" . $prefix . "/campaign_video", 0777, true)) {
+                        chmod("files/" . $prefix . "/campaign_video", 0777);
                     }
                 }
                 
