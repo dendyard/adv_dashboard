@@ -32,6 +32,15 @@ class Adv_Model extends CI_Model
         return $query0->row_array();
     }
     
+    public function get_last_update($tblName) {
+        $sql0 = "SELECT MAX(in_date) as lastupdate FROM " . $tblName;
+
+        $query0 = $this->db->query($sql0);
+        return $query0->row_array();
+    }
+
+
+    
     public function get_conversion_cols($prefix) {
         $sql = "SELECT conversion_col FROM master_account WHERE prefix='" . $prefix . "' LIMIT 1";
         $query = $this->db->query($sql);

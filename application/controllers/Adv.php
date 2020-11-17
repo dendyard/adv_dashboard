@@ -44,6 +44,11 @@ class Adv extends CI_Controller {
                 'version_report' => $this->Adv_Model->get_record_table($al['prefix'] . '_campaign_version'),
                 'unique_report' => $this->Adv_Model->get_record_table($al['prefix'] . '_campaign_unique'),
                 'video_report' => $this->Adv_Model->get_record_table($al['prefix'] . '_campaign_video'),
+                'lastupdate_cr' => $this->Adv_Model->get_last_update($al['prefix'] . '_campaign_report'),
+                'lastupdate_cv' => $this->Adv_Model->get_last_update($al['prefix'] . '_campaign_version'),
+                'lastupdate_cu' => $this->Adv_Model->get_last_update($al['prefix'] . '_campaign_unique'),
+                'lastupdate_cd' => $this->Adv_Model->get_last_update($al['prefix'] . '_campaign_video'),
+
             );
             
             $acn = array ($al['accountname']);
@@ -61,7 +66,6 @@ class Adv extends CI_Controller {
             'account_list' => $accList,
             'd_collection' => $collection_tbl_info
         );
-
 
         $this->load->view('public/template/header');
         $this->load->view('public/dashboard/dashboard_main',$data);

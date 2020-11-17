@@ -101,6 +101,11 @@ table{
 
 }
 
+.lastupdate {
+    font-size: 8px;
+    color: #6f6e6e;
+}
+
 .logo-client-sidebar img {
     width: 95%;
     margin-top: -44px;

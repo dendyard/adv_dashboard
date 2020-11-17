@@ -32,19 +32,30 @@
                                           <tbody>
 
                                             <tr style="background-color: #fff;">
-                                              <td>Campaign Report</td>
+                                              <td>Campaign Report<br>
+                                              <small class='lastupdate'>Last update : <?=($al['tbl_rec']['lastupdate_cr']['lastupdate'] == ''? '-':$al['tbl_rec']['lastupdate_cr']['lastupdate']);?></small>
+                                              </td>
                                               <td class="text-rg"><?php echo number_format($al['tbl_rec']['camp_report']['t_record']);?> &nbsp;records</td>
                                             </tr>
                                             <tr style="background-color: #fff;">
-                                              <td>Version Report</td>
+                                              <td>Version Report
+                                              <br>
+                                              <small class='lastupdate'>Last update : <?=($al['tbl_rec']['lastupdate_cv']['lastupdate'] == ''? '-':$al['tbl_rec']['lastupdate_cv']['lastupdate']);?></small>
+                                              </td>
                                               <td class="text-rg"><?php echo number_format($al['tbl_rec']['version_report']['t_record']);?> &nbsp;records</td>
                                             </tr>
                                             <tr style="background-color: #fff;">
-                                              <td>Unique Report</td>
+                                              <td>Unique Report
+                                              <br>
+                                              <small class='lastupdate'>Last update : <?=($al['tbl_rec']['lastupdate_cu']['lastupdate'] == ''? '-':$al['tbl_rec']['lastupdate_cu']['lastupdate']);?></small>
+                                              </td>
                                               <td class="text-rg"><?php echo number_format($al['tbl_rec']['unique_report']['t_record']);?> &nbsp;records</td>
                                             </tr>
                                             <tr style="background-color: #fff;">
-                                              <td>Video Report</td>
+                                              <td>Video Report
+                                              <br>
+                                              <small class='lastupdate'>Last update : <?=($al['tbl_rec']['lastupdate_cd']['lastupdate'] == ''? '-':$al['tbl_rec']['lastupdate_cd']['lastupdate']);?></small>
+                                              </td>
                                               <td class="text-rg"><?php echo number_format($al['tbl_rec']['video_report']['t_record']);?> &nbsp;records</td>
                                             </tr>
                                               
