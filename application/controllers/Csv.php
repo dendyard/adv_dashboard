@@ -286,7 +286,7 @@ class Csv extends CI_Controller {
                 $i++;
                 if ($i == 1) {
                     $totalCol = sizeOf($row);
-                    for ($j = 30; $j <= ($totalCol-1); $j++) {
+                    for ($j = 35; $j <= ($totalCol-1); $j++) {
                         $metricName[] = $row[$j];
                     }
                 }
@@ -338,17 +338,22 @@ class Csv extends CI_Controller {
                     'placementDimension' => $row[16],
                     'sectionName' => $row[17],
                     'costPerUnit' => $row[18],
-                    'impression' => $row[19],
-                    'clicks' => $row[20],
-                    'totalConvertion' => $row[21],
-                    'postClickConversion' => $row[22],
-                    'postImpresionConversion' => $row[23],
-                    'conversionRevenue' => $row[24],
-                    'totalMediaCost' => numnegative($row[25]),
-                    'ecpc' => $row[26],
-                    'ecpa' => $row[27],
-                    'ecpm' => $row[28],
-                    'totalProfit' => numnegative($row[29]),
+                    'customField1' => $row[19],
+                    'customField2' => $row[20],
+                    'customField3' => $row[21],
+                    'customField4' => $row[22],
+                    'customField5' => $row[23],
+                    'impression' => $row[24],
+                    'clicks' => $row[25],
+                    'totalConvertion' => $row[26],
+                    'postClickConversion' => $row[27],
+                    'postImpresionConversion' => $row[28],
+                    'conversionRevenue' => $row[29],
+                    'totalMediaCost' => numnegative($row[30]),
+                    'ecpc' => $row[31],
+                    'ecpa' => $row[32],
+                    'ecpm' => $row[33],
+                    'totalProfit' => numnegative($row[34]),
                     'placementNameSplit_1' => $splited[0],
                     'placementNameSplit_2' => $splited[1],
                     'placementNameSplit_3' => $splited[2],
@@ -364,7 +369,7 @@ class Csv extends CI_Controller {
               for ($conv = 0; $conv <= (sizeOf($metricName)-1); $conv++){
                         $dt = [
                             'conversion_name_' . ($conv+1) => $metricName[$conv],
-                            'conversion_value_' . ($conv+1) => numnegative($row[30 + $conv]),
+                            'conversion_value_' . ($conv+1) => numnegative($row[35 + $conv]),
                             
                         ];
                         
@@ -394,7 +399,7 @@ class Csv extends CI_Controller {
                 $i++;
                 if ($i == 1) {
                     $totalCol = sizeOf($row);
-                    for ($j = 26; $j <= ($totalCol-1); $j++) {
+                    for ($j = 31; $j <= ($totalCol-1); $j++) {
                         $metricName[] = $row[$j];
                     }
                 }
@@ -411,7 +416,7 @@ class Csv extends CI_Controller {
                 $splited[7] = 'Undefined';
                 $splited[8] = 'Undefined';
                 
-                if ($row[17] <> 'Undefined') {
+                if ($row[31] <> 'Undefined') {
                     $tmpsplited = explode('_', $row[17]);                    
                     for ($g = 0; $g <= (sizeOf($tmpsplited)-1); $g++) {
                         $splited[$g] = $tmpsplited[$g];
@@ -448,12 +453,17 @@ class Csv extends CI_Controller {
                     'versionName' => $row[17],
                     'targetAudienceName' => $row[18],
                     'sectionName' => $row[19],
-                    'impression' => $row[20],
-                    'clicks' => $row[21],
-                    'totalConversion' => $row[22],
-                    'conversionRevenue' => $row[23],
-                    'postClickConversion' => $row[24],
-                    'postImpresionConversion' => $row[25],
+                    'customField1' => $row[20],
+                    'customField2' => $row[21],
+                    'customField3' => $row[22],
+                    'customField4' => $row[23],
+                    'customField5' => $row[24],
+                    'impression' => $row[25],
+                    'clicks' => $row[26],
+                    'totalConversion' => $row[27],
+                    'conversionRevenue' => $row[28],
+                    'postClickConversion' => $row[29],
+                    'postImpresionConversion' => $row[30],
                     'versNameSplit_1' => $splited[0],
                     'versNameSplit_2' => $splited[1],
                     'versNameSplit_3' => $splited[2],
@@ -469,7 +479,7 @@ class Csv extends CI_Controller {
               for ($conv = 0; $conv <= (sizeOf($metricName)-1); $conv++){
                         $dt = [
                             'conversion_name_' . ($conv+1) => $metricName[$conv],
-                            'conversion_value_' . ($conv+1) => numnegative($row[26 + $conv]),
+                            'conversion_value_' . ($conv+1) => numnegative($row[31 + $conv]),
                             
                         ];
                         
@@ -492,12 +502,17 @@ class Csv extends CI_Controller {
 		
             $file = $filepath;
 
-            $i = 0;
+            $i = 0;            
             $handle = fopen($file, "r");
                 
             while (($row = fgetcsv($handle))) {
                 $i++;
-
+                if ($i == 1) {
+                    $totalCol = sizeOf($row);
+                    for ($j = 42; $j <= ($totalCol-1); $j++) {
+                        $metricName[] = $row[$j];
+                    }
+                }
                 if ($i == 1) continue;
                 
                 $splited[0] = 'Undefined';
@@ -546,24 +561,29 @@ class Csv extends CI_Controller {
                     'placementDimension' => $row[16],
                     'sectionName' => $row[17],
                     'costPerUnit' => $row[18],
-                    'impression' => $row[19],
-                    'clicks' => $row[20],
-                    'totalConversion' => $row[21],
-                    'postClickConversion' => $row[22],
-                    'postImpresionConversion' => $row[23],
-                    'conversionRevenue' => $row[24],
-                    'totalMediaCost' => $row[25],
-                    'ecpc' => $row[26],
-                    'ecpa' => $row[27],
-                    'ecpm' => $row[28],
-                    'totalProfit' => $row[29],
-                    'adAverageDuration' => $row[30],
-                    'videoStart	' => $row[31],
-                    'videoPlayed25' => $row[32],
-                    'videoPlayed50' => $row[33],
-                    'videoPlayed75' => $row[34],
-                    'videoPlayedFull' => $row[35],
-                    'videoAverageDuration' => $row[36],
+                    'customField1' => $row[19],
+                    'customField2' => $row[20],
+                    'customField3' => $row[21],
+                    'customField4' => $row[22],
+                    'customField5' => $row[23],
+                    'impression' => $row[24],
+                    'clicks' => $row[25],
+                    'totalConversion' => $row[26],
+                    'postClickConversion' => $row[27],
+                    'postImpresionConversion' => $row[28],
+                    'conversionRevenue' => $row[29],
+                    'totalMediaCost' => $row[30],
+                    'ecpc' => $row[31],
+                    'ecpa' => $row[32],
+                    'ecpm' => $row[33],
+                    'totalProfit' => $row[34],
+                    'adAverageDuration' => $row[35],
+                    'videoStart	' => $row[36],
+                    'videoPlayed25' => $row[37],
+                    'videoPlayed50' => $row[38],
+                    'videoPlayed75' => $row[39],
+                    'videoPlayedFull' => $row[40],
+                    'videoAverageDuration' => $row[41],
                     'placementNameSplit_1' => $splited[0],
                     'placementNameSplit_2' => $splited[1],
                     'placementNameSplit_3' => $splited[2],
@@ -574,8 +594,20 @@ class Csv extends CI_Controller {
                     'placementNameSplit_8' => $splited[7],
                     'placementNameSplit_9' => $splited[8],
                 ];
+
+              $findata = $data;
+              for ($conv = 0; $conv <= (sizeOf($metricName)-1); $conv++){
+                    $dt = [
+                        'conversion_name_' . ($conv+1) => $metricName[$conv],
+                        'conversion_value_' . ($conv+1) => numnegative($row[42 + $conv]),
+                        
+                    ];
+                    
+                    $findata = array_merge($findata, $dt);
+                    unset($dt);
+              }
                 
-              $insert = $this->Adv_Model->insertCSV($accname, $data);
+              $insert = $this->Adv_Model->insertCSV($accname, $findata);
                 
             }
 
@@ -594,7 +626,12 @@ class Csv extends CI_Controller {
                 
             while (($row = fgetcsv($handle))) {
                 $i++;
-
+                if ($i == 1) {
+                    $totalCol = sizeOf($row);
+                    for ($j = 43; $j <= ($totalCol-1); $j++) {
+                        $metricName[] = $row[$j];
+                    }
+                }
                 
                 if ($i == 1) continue;
                 
@@ -608,8 +645,8 @@ class Csv extends CI_Controller {
                 $splited[7] = 'Undefined';
                 $splited[8] = 'Undefined';
                 
-                if ($row[13] <> 'Undefined') {
-                    $tmpsplited = explode('_', $row[13]);                    
+                if ($row[14] <> 'Undefined') {
+                    $tmpsplited = explode('_', $row[14]);                    
                     for ($g = 0; $g <= (sizeOf($tmpsplited)-1); $g++) {
                         $splited[$g] = $tmpsplited[$g];
                     }
@@ -619,49 +656,55 @@ class Csv extends CI_Controller {
                 $old_date_timestamp = strtotime($old_date);
                 $new_date = date('Y-m-d', $old_date_timestamp); 
                 
-                $camp_start = strtotime($row[6]);
-                $camp_end = strtotime($row[7]);
+                $camp_start = strtotime($row[7]);
+                $camp_end = strtotime($row[8]);
                 $new_cstart = date('Y-m-d', $camp_start); 
                 $new_estart = date('Y-m-d', $camp_end);
                 
                 $data = [
-                    'accountId' => $new_date,
-                    'accountName' => $row[1],
-                    'advertiserId' => $row[2],
-                    'advertiserName' => $row[3],
-                    'campaignId' => $row[4],
-                    'campaignName' => $row[5],
+                    'day' => $new_date,
+                    'accountId' => $row[1],
+                    'accountName' => $row[2],
+                    'advertiserId' => $row[3],
+                    'advertiserName' => $row[4],
+                    'campaignId' => $row[5],
+                    'campaignName' => $row[6],
                     'campaignStartDate' => $new_cstart,
                     'campaignEndDate' => $new_estart,
-                    'siteId' => $row[8],
-                    'siteName' => $row[9],
-                    'adId' => $row[10],
-                    'adName' => $row[11],
-                    'placementId' => $row[12],
-                    'placementName' => $row[13],
-                    'adFormatName' => $row[14],
-                    'placementDimension' => $row[15],
-                    'sectionName' => $row[16],
-                    'costPerUnit' => $row[17],
-                    'impression' => $row[18],
-                    'clicks' => $row[19],
-                    'totalConversion' => $row[20],
-                    'postClickConversion' => $row[21],
-                    'postImpresionConversion' => $row[22],
-                    'conversionRevenue' => $row[23],
-                    'totalMediaCost' => $row[24],
-                    'uniqueImpression' => $row[25],
-                    'uniqueClicks' => $row[26],
-                    'averageFrequensy' => $row[27],
-                    'uniqueVideoStartd' => $row[28],
-                    'uniqueInteraction' => $row[29],
-                    'adAverageDuration' => $row[30],
-                    'videoStart' => $row[31],
-                    'videoPlayed25' => $row[32],
-                    'videoPlayed50' => $row[33],
-                    'videoPlayed75' => $row[34],
-                    'videoPlayedFull' => $row[35],
-                    'videoAverageDuration' => $row[36],
+                    'siteId' => $row[9],
+                    'siteName' => $row[10],
+                    'adId' => $row[11],
+                    'adName' => $row[12],
+                    'placementId' => $row[13],
+                    'placementName' => $row[14],
+                    'adFormatName' => $row[15],
+                    'placementDimension' => $row[16],
+                    'sectionName' => $row[17],
+                    'costPerUnit' => $row[18],
+                    'customField1' => $row[19],
+                    'customField2' => $row[20],
+                    'customField3' => $row[21],
+                    'customField4' => $row[22],
+                    'customField5' => $row[23],
+                    'impression' => $row[24],
+                    'clicks' => $row[25],
+                    'totalConversion' => $row[26],
+                    'postClickConversion' => $row[27],
+                    'postImpresionConversion' => $row[28],
+                    'conversionRevenue' => $row[29],
+                    'totalMediaCost' => $row[30],
+                    'uniqueImpression' => $row[31],
+                    'uniqueClicks' => $row[32],
+                    'averageFrequensy' => $row[33],
+                    'uniqueVideoStartd' => $row[34],
+                    'uniqueInteraction' => $row[35],
+                    'adAverageDuration' => $row[36],
+                    'videoStart' => $row[37],
+                    'videoPlayed25' => $row[38],
+                    'videoPlayed50' => $row[39],
+                    'videoPlayed75' => $row[40],
+                    'videoPlayedFull' => $row[41],
+                    'videoAverageDuration' => $row[42],
                     'placementNameSplit_1' => $splited[0],
                     'placementNameSplit_2' => $splited[1],
                     'placementNameSplit_3' => $splited[2],
@@ -673,10 +716,21 @@ class Csv extends CI_Controller {
                     'placementNameSplit_9' => $splited[8],
                 ];
                 
-              $insert = $this->Adv_Model->insertCSV($accname, $data);
+                $findata = $data;
+              for ($conv = 0; $conv <= (sizeOf($metricName)-1); $conv++){
+                        $dt = [
+                            'conversion_name_' . ($conv+1) => $metricName[$conv],
+                            'conversion_value_' . ($conv+1) => numnegative($row[43 + $conv]),
+                            
+                        ];
+                        
+                        $findata = array_merge($findata, $dt);
+                        unset($dt);
+              }
                 
+              $insert = $this->Adv_Model->insertCSV($accname, $findata);
             }
-
+            
             fclose($handle);
             unlink($file);
             return $insert;
