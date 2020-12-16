@@ -6,29 +6,36 @@
                             <div class="card" style="height:100%;">
                                 <div class="header" style="margin-bottom:30px;">
                                     <center>
-                                    <h4 class="title_card">Add New Account</h4>
+                                    <h4 class="title_card">Add New Custom Report</h4>
                                     </center>
                                     <p style="font-size: 12px;
     line-height: 1.5;
     text-align: center;
     font-weight: 100;
-    color: blueviolet;">Caution : This process will add a few table in Database, make sure you understand this feature &amp; functionality. If there any error during the process please contact The Web Developer</p>
+    color: blueviolet;">Caution : This process will add a table in Database, make sure you understand this feature &amp; functionality. If there any error during the process please contact The Web Developer</p>
                                 </div>
                                 
                                 
                                 <div class="row user-form">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Account Name</label>
-                                            <input type="text" id='accountname' name="accountname" class="form-control" placeholder="eg : Xaxis Singapore" required="" >
+                                            <label>Custom Report Name</label>
+                                            <input type="text" id='accountname' name="accountname" class="form-control" placeholder="eg : ADV Custom Report" required="" >
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Table Prefix</label>
-                                            <input type="text" id='prefix' name="prefix" class="form-control" placeholder="eg : xaxis_sg" required="" >
+                                            <input type="text" id='prefix' name="prefix" class="form-control" placeholder="eg : adv_custom_report_1" required="" >
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Column Number</label>
+                                            <input type="text" id='colnum' name="colnum" class="form-control" value="1" placeholder="" required="" >
+                                        </div>
+                                    </div>
+                                    
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Conversion Column</label>
@@ -43,7 +50,7 @@
                                        
                                     </div>
                                     <div class="col-md-6">
-                                        <button style='width:130px;' type="submit"  class="btn btn-info btn-fill pull-right">Save Account</button>
+                                        <button style='width:180px;' type="submit"  class="btn btn-info btn-fill pull-right">Save Custom Report</button>
                                         
                                         <button style='width:90px;  margin-right:10px;' type="button" onclick='window.location.href="<?php echo base_url('/'); ?>"'   class="btn btn-warning btn-fill pull-right">Cancel</button>&nbsp;&nbsp;
                                                 
@@ -84,16 +91,22 @@
 		var accname = $("#accountname").val();
         var prefix = $("#prefix").val();
         var conv_form = $("#conve").val();
+        var colnum = $("#colnum").val();
         
 		var success = true;
         
         if(accname == ""){
-            toastr["warning"]("Please fill out Account Name.", "Notification");
+            toastr["warning"]("Please fill out Custom Report Name.", "Notification");
             success = false;
         }
 
         if(prefix == ""){
             toastr["warning"]("Please fill out Table Prefix name", "Notification");
+            success = false;
+        }
+
+        if(colnum == ""){
+            toastr["warning"]("Please fill out Column Number", "Notification");
             success = false;
         }
 
@@ -107,11 +120,12 @@
         
 			$.ajax({
 				type: 'POST',
-				url: base_url + 'adv/accAddProg',
+				url: base_url + 'adv/accAddProgCustom',
 				dataType: 'json',
 				data: {accountName: accname,
                        prefix:prefix,
                        conv:conv_form,
+                       colnum:colnum,
                       }
 			}).done(function (result) {
 			if(result.status){

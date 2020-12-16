@@ -38,8 +38,9 @@ class Adv extends CI_Controller {
         $accList = $this->Adv_Model->get_account_list();
 
         foreach ($accList as $al){
-
-            $tb = array(
+            
+            if ($al['custom_colnum'] == 0) {
+                $tb = array(
                 'camp_report' => $this->Adv_Model->get_record_table($al['prefix'] . '_campaign_report'),
                 'version_report' => $this->Adv_Model->get_record_table($al['prefix'] . '_campaign_version'),
                 'unique_report' => $this->Adv_Model->get_record_table($al['prefix'] . '_campaign_unique'),
@@ -48,8 +49,17 @@ class Adv extends CI_Controller {
                 'lastupdate_cv' => $this->Adv_Model->get_last_update($al['prefix'] . '_campaign_version'),
                 'lastupdate_cu' => $this->Adv_Model->get_last_update($al['prefix'] . '_campaign_unique'),
                 'lastupdate_cd' => $this->Adv_Model->get_last_update($al['prefix'] . '_campaign_video'),
-
-            );
+                );    
+                $customtbl = 0;
+            }else {
+                $tb = array(
+                'custom_report' => $this->Adv_Model->get_record_table($al['prefix']),
+                'lastupdate_custom_report' => $this->Adv_Model->get_last_update($al['prefix']),
+                    
+                );
+                $customtbl = 1;
+            }
+            
             
             $acn = array ($al['accountname']);
             $pf = array ($al['prefix']);
@@ -58,6 +68,7 @@ class Adv extends CI_Controller {
                      'account_list' => $acn,
                      'prefix' => $pf,
                      'tbl_rec' => $tb,
+                     'iscustom' => $customtbl,
                 );
             $collection_tbl_info[] = $tb_info;
         }
@@ -110,6 +121,18 @@ class Adv extends CI_Controller {
         
     }
     
+    public function addnewcustom()
+	{
+        if ($this->session->userdata('email') == ""){
+			redirect('/login', 'refresh');
+		}
+        
+        $this->load->view('public/template/header');
+        $this->load->view('public/dashboard/addnew_custom');
+        $this->load->view('public/template/footer');
+        
+    }
+    
     public function accAddProg(){
         
         
@@ -142,6 +165,48 @@ class Adv extends CI_Controller {
                     if (mkdir("files/" . $prefix . "/campaign_video", 0777, true)) {
                         chmod("files/" . $prefix . "/campaign_video", 0777);
                     }
+                }
+                
+                $response['status'] = TRUE;
+                        
+            }else{
+                $response['status'] = FALSE;
+                $response['msg'] = 'something when wrong';
+            }   
+        echo json_encode($response);
+    }
+    
+    
+    
+    
+    
+    
+    public function accAddProgCustom(){
+        
+        
+//        $prefix = 'anggun_test';
+//        $conv = '2';
+//        $colnum = '5';
+//        $accname = 'anggun_test';
+        
+        $prefix = strtolower($this->input->post('prefix'));
+        $conv = $this->input->post('conv');
+        $colnum = $this->input->post('colnum');
+        $accname = $this->input->post('accountName');
+        
+        
+        $dataInsert = array(
+                'accountname'    => $accname,
+                'prefix'         => $prefix,
+                'conversion_col' => $conv,
+                'custom_colnum' => $colnum,
+                'in_by'          => $this->session->userdata('userId')
+            );
+            if($this->Adv_Model->addCustomReport($dataInsert, $prefix, $colnum, $conv)){
+                $response['status'] = TRUE;
+                
+                if (mkdir("files/" . $prefix, 0777, true)){
+                    chmod("files/" . $prefix, 0777);  
                 }
                 
                 $response['status'] = TRUE;
@@ -203,6 +268,10 @@ class Adv extends CI_Controller {
             case 'dr':
                 $fullpath =  'files/' . $prefix . '/campaign_video/' . $fn;
                 break;
+            case 'ct':
+                $fullpath =  'files/' . $prefix . '/' . $fn;
+                break;
+                
         }
         
         if (unlink($fullpath)) {

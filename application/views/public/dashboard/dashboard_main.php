@@ -11,23 +11,38 @@
                                 <h4 class="title_card">Master Report Account</h4>
                                </center>
                                    <button onclick='window.location.href="<?php echo base_url(); ?>adv/addnew"' style="width:155px;" type="submit" class="btn btn-info btn-fill">Add New Account</button>
+                                   <button onclick='window.location.href="<?php echo base_url(); ?>adv/addnewcustom"' style="width:185px;" type="submit" class="btn btn-info btn-fill">Add New Custom Report</button>
+                                   
                                 </div>
                             </div>
                            
                         <?php 
                         
-                       //unlink('files/djarum_id/campaign_report/Djarum_Version_Report_20201102035217923.csv');
                             foreach ($d_collection as $al){
                         ?>
                             <div class="col-md-4 center-block">
                                 <div class="card">
-                                    <div class="header_purple">
+                                    <?php 
+                                    if ($al['iscustom'] == 0) {
+                                    ?>
+                                        <div class="header_purple">
+                                    <?php 
+                                    }else {
+                                        
+                                        ?>
+                                        <div class="header_biru">
+                                    <?php
+                                    } ?>
                                         <p class="tittle_box pull-left"><?php echo $al['account_list'][0];?></p>
                                         <p class="open-data pull-right"><a class="open-data" href="adv/manage/<?=$al['prefix'][0]?>">Manage</a></p>
                                     </div>
                                     <div class="card-body">
                                         
                                         <small>Table prefix : <?=$al['prefix'][0]?></small><br>
+                                        <?php 
+                                        
+                                            if ($al['iscustom'] == 0) {
+                                        ?>
                                         <table class="table table-bordered mt-8">
                                           <tbody>
 
@@ -61,7 +76,21 @@
                                               
                                           </tbody>
                                         </table>
+                                        <?php }else{
+                                        //Custom Table        
+                                        ?>
+                                        <table class="table table-bordered mt-8">
+                                          <tbody>
+
+                                            <tr style="background-color: #fff;">
+                                              <td>Custom Report<br>
+                                              <small class='lastupdate'>Last update : <?=($al['tbl_rec']['lastupdate_custom_report']['lastupdate'] == ''? '-':$al['tbl_rec']['lastupdate_custom_report']['lastupdate']);?></small>
+                                              </td>
+                                              <td class="text-rg"><?php echo number_format($al['tbl_rec']['custom_report']['t_record']);?> &nbsp;records</td>
+                                              </tr></tbody></table>
                                         
+                                        <?php
+                                        } ?>
                                     </div>
                                 </div>
                             </div>
@@ -85,24 +114,73 @@
                                         <?php 
                                         $forcebtn = true;
                                         foreach ($d_collection as $als){
+                                            if ($als['iscustom'] == 0) {
+                                                $camp_report = 'files/' . $als['prefix'][0] . '/campaign_report/';
+                                                $version_report = 'files/' . $als['prefix'][0] . '/campaign_version/';
+                                                $unique_report = 'files/' . $als['prefix'][0] . '/campaign_unique/';
+                                                $video_report = 'files/' . $als['prefix'][0] . '/campaign_video/';
 
-                                            $camp_report = 'files/' . $als['prefix'][0] . '/campaign_report/';
-                                            $version_report = 'files/' . $als['prefix'][0] . '/campaign_version/';
-                                            $unique_report = 'files/' . $als['prefix'][0] . '/campaign_unique/';
-                                            $video_report = 'files/' . $als['prefix'][0] . '/campaign_video/';
+                                                $camp_files1 = array_diff(scandir($camp_report,1), array('..', '.', '.DS_Store'));
+                                                $version_files1 = array_diff(scandir($version_report,1), array('..', '.', '.DS_Store'));
+                                                $unique_files1 = array_diff(scandir($unique_report,1), array('..', '.', '.DS_Store'));
+                                                $video_files1 = array_diff(scandir($video_report,1), array('..', '.', '.DS_Store'));
+
+
+                                                if (sizeOf($camp_files1) == 0 &&
+                                                    sizeOf($version_files1) == 0 &&
+                                                    sizeOf($unique_files1) == 0 &&
+                                                    sizeOf($video_files1) == 0
+                                                   ) {
+
+                                                }else{
+                                                    $forcebtn = false;
+
+                                                    echo $als['account_list'][0];
+                                                    foreach ($camp_files1 as $fl0) {
+                                                        if ($fl0 == '.DS_Store') continue;
+                                                        echo '<div class="pre-list1">';
+                                                        print_r('Campaign Report : ' .  $fl0);
+                                                        echo '<button class="del-badge pull-right" onclick="delfileserver(`' . $fl0 .'`,`' . $als['prefix'][0] . '`,`cr`);" >Delete</button>';  
+                                                        echo '</div>';
+                                                    }
+
+                                                    foreach ($version_files1 as $fl0) {
+                                                        if ($fl0 == '.DS_Store') continue;
+                                                        echo '<div class="pre-list2">';
+                                                        print_r('Version Report : ' .  $fl0);
+                                                        echo '<button class="del-badge pull-right" onclick="delfileserver(`' . $fl0 .'`,`' . $als['prefix'][0] . '`,`vr`);" >Delete</button>';  
+                                                        echo '</div>';
+                                                    }
+
+                                                    foreach ($unique_files1 as $fl0) {
+                                                        if ($fl0 == '.DS_Store') continue;
+                                                        echo '<div class="pre-list3">';
+                                                        print_r('Unique Report : ' .  $fl0);
+                                                        echo '<button class="del-badge pull-right" onclick="delfileserver(`' . $fl0 .'`,`' . $als['prefix'][0] . '`,`ur`);" >Delete</button>';  
+                                                        echo '</div>';
+                                                    }
+
+                                                    foreach ($video_files1 as $fl0) {
+                                                        if ($fl0 == '.DS_Store') continue;
+                                                        echo '<div class="pre-list4">';
+                                                        print_r('Video Report : ' .  $fl0);
+                                                        echo '<button class="del-badge pull-right" onclick="delfileserver(`' . $fl0 .'`,`' . $als['prefix'][0] . '`,`dr`);" >Delete</button>';  
+                                                        echo '</div>';
+                                                    }
+
+                                                echo '<br><br>';
+
+                                                }
+                                            }else{
+                                                
+                                             // START Custom
+                                            $camp_report = 'files/' . $als['prefix'][0];
+                                            
                                             
                                             $camp_files1 = array_diff(scandir($camp_report,1), array('..', '.', '.DS_Store'));
-                                            $version_files1 = array_diff(scandir($version_report,1), array('..', '.', '.DS_Store'));
-                                            $unique_files1 = array_diff(scandir($unique_report,1), array('..', '.', '.DS_Store'));
-                                            $video_files1 = array_diff(scandir($video_report,1), array('..', '.', '.DS_Store'));
                                             
 
-                                            if (sizeOf($camp_files1) == 0 &&
-                                                sizeOf($version_files1) == 0 &&
-                                                sizeOf($unique_files1) == 0 &&
-                                                sizeOf($video_files1) == 0
-                                               ) {
-                                               
+                                            if (sizeOf($camp_files1) == 0) {
                                             }else{
                                                 $forcebtn = false;
                                                 
@@ -110,37 +188,16 @@
                                                 foreach ($camp_files1 as $fl0) {
                                                     if ($fl0 == '.DS_Store') continue;
                                                     echo '<div class="pre-list1">';
-                                                    print_r('Campaign Report : ' .  $fl0);
-                                                    echo '<button class="del-badge pull-right" onclick="delfileserver(`' . $fl0 .'`,`' . $als['prefix'][0] . '`,`cr`);" >Delete</button>';  
+                                                    print_r('Custom Report : ' .  $fl0);
+                                                    echo '<button class="del-badge pull-right" onclick="delfileserver(`' . $fl0 .'`,`' . $als['prefix'][0] . '`,`ct`);" >Delete</button>';  
                                                     echo '</div>';
                                                 }
                                             
-                                                foreach ($version_files1 as $fl0) {
-                                                    if ($fl0 == '.DS_Store') continue;
-                                                    echo '<div class="pre-list2">';
-                                                    print_r('Version Report : ' .  $fl0);
-                                                    echo '<button class="del-badge pull-right" onclick="delfileserver(`' . $fl0 .'`,`' . $als['prefix'][0] . '`,`vr`);" >Delete</button>';  
-                                                    echo '</div>';
-                                                }
-                                            
-                                                foreach ($unique_files1 as $fl0) {
-                                                    if ($fl0 == '.DS_Store') continue;
-                                                    echo '<div class="pre-list3">';
-                                                    print_r('Unique Report : ' .  $fl0);
-                                                    echo '<button class="del-badge pull-right" onclick="delfileserver(`' . $fl0 .'`,`' . $als['prefix'][0] . '`,`ur`);" >Delete</button>';  
-                                                    echo '</div>';
-                                                }
-                                            
-                                                foreach ($video_files1 as $fl0) {
-                                                    if ($fl0 == '.DS_Store') continue;
-                                                    echo '<div class="pre-list4">';
-                                                    print_r('Video Report : ' .  $fl0);
-                                                    echo '<button class="del-badge pull-right" onclick="delfileserver(`' . $fl0 .'`,`' . $als['prefix'][0] . '`,`dr`);" >Delete</button>';  
-                                                    echo '</div>';
-                                                }
                                             
                                             echo '<br><br>';
                                                 
+                                            }
+                                             // End of custom 
                                             }
                                         }
                                         

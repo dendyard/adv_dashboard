@@ -26,7 +26,7 @@ class Adv_Model extends CI_Model
     }
     
     public function get_record_table($tblName) {
-        $sql0 = "SELECT count(accountName) as t_record FROM " . $tblName;
+        $sql0 = "SELECT count(0) as t_record FROM " . $tblName;
 
         $query0 = $this->db->query($sql0);
         return $query0->row_array();
@@ -58,6 +58,47 @@ class Adv_Model extends CI_Model
         }
     }
     
+    public function addCustomReport($data, $prefix, $colnum, $conv){
+    
+        $query = $this->db->insert('master_account', $data); 
+        
+        if ($query) {
+            $addtbl = $this->createCustomTable($prefix, $conv, $colnum);
+            return $addtbl;
+        }
+    }
+    
+    public function createCustomTable($prefix, $conv, $colnum){
+    
+        $cv_col = '';
+        for ($i = 1; $i <= ($conv * 4); $i++ ) {
+            $cv_col .= '`conversion_name_' . $i . '` varchar(250) DEFAULT NULL, `conversion_value_' . $i . '` double DEFAULT NULL,';
+        }
+        
+        $colnumcol = '';
+        
+        for ($j = 1; $j <= $colnum; $j++ ) {
+            $colnumcol .= '`custom_col_' . $j . '` TEXT DEFAULT NULL,';
+        }
+        
+        
+        $campaign = 'CREATE TABLE `' . $prefix . '` (
+                      `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, 
+                      '. $colnumcol . '
+                      `in_date` datetime DEFAULT CURRENT_TIMESTAMP,
+                       PRIMARY KEY (id)
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;';
+        
+        
+        $query0 = $this->db->query($campaign);
+        
+        if ($query0) { 
+            return $query0;
+        }
+        exit();
+            
+    }
+    
     public function createAccountTable($prefix, $conv){
         
         $cv_col = '';
@@ -66,7 +107,7 @@ class Adv_Model extends CI_Model
         }
         
         
-        $campaign = 'CREATE TABLE `' . $prefix . '_campaign_report` (
+        $campaign = 'CREATE TABLE `' . $prefix . '` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `day` date DEFAULT NULL,
   `accountId` int(11) DEFAULT NULL,
