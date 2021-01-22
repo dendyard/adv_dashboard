@@ -107,7 +107,7 @@ class Adv_Model extends CI_Model
         }
         
         
-        $campaign = 'CREATE TABLE `' . $prefix . '` (
+        $campaign = 'CREATE TABLE `' . $prefix . '_campaign_report` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `day` date DEFAULT NULL,
   `accountId` int(11) DEFAULT NULL,

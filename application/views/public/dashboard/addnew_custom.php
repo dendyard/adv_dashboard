@@ -36,10 +36,10 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" style="display:none;">
                                         <div class="form-group">
                                             <label>Conversion Column</label>
-                                            <input type="text" id='conve' name="conve" class="form-control" value='4' >
+                                            <input type="text" id='conve' name="conve" class="form-control" value='0' >
                                         </div>
                                     </div>
                                     
